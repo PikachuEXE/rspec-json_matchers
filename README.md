@@ -2,7 +2,16 @@
 
 A collection of RSpec matchers for testing JSON data.
 
-(Placeholder for badges)
+[![Gem Version](http://img.shields.io/gem/v/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
+[![License](https://img.shields.io/github/license/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
+
+[![Build Status](http://img.shields.io/travis/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://travis-ci.org/PikachuEXE/rspec-json_matchers)
+[![Dependency Status](http://img.shields.io/gemnasium/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://gemnasium.com/PikachuEXE/rspec-json_matchers)
+
+[![Code Climate](http://img.shields.io/codeclimate/github/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codeclimate.com/github/PikachuEXE/rspec-json_matchers)
+[![Coverage Status](http://img.shields.io/coveralls/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://coveralls.io/r/PikachuEXE/rspec-json_matchers)
+
+[![Gitter](https://img.shields.io/badge/gitter-join%20chat-1dce73.svg?style=flat-square)](https://gitter.im/PikachuEXE/rspec-json_matchers)
 
 This gem provides a collection of RSpec matchers for testing JSON data.
 It aims to make JSON testing flexible & easier, especially for testing multiple properties.
