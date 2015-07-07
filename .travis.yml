@@ -1,0 +1,20 @@
+# Send builds to container-based infrastructure
+# http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
+language: ruby
+cache:
+  - bundler
+rvm:
+  - 2.0
+  - 2.1
+  - 2.2
+  - ruby-head
+gemfile:
+  - gemfiles/rspec_3_0.gemfile
+  - gemfiles/rspec_3_1.gemfile
+  - gemfiles/rspec_3_2.gemfile
+  - gemfiles/rspec_3_3.gemfile
+matrix:
+  fast_finish: true
+  allow_failures:
+    - rvm: ruby-head
