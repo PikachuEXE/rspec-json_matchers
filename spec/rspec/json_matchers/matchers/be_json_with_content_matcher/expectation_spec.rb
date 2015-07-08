@@ -312,26 +312,20 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         let(:expected_value) { RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::Anything }
 
         [
-          {type: "String", actual: "ab", should_match: true},
-          {type: "Number (Integer)", actual: 1, should_match: true},
-          {type: "Number (Float)", actual: 1.1, should_match: true},
-          {type: "Array", actual: [], should_match: true},
-          {type: "Object", actual: {}, should_match: true},
-          {type: "true", actual: true, should_match: true},
-          {type: "false", actual: false, should_match: true},
-          {type: "null", actual: nil, should_match: true},
+          {type: "String", actual: "ab"},
+          {type: "Number (Integer)", actual: 1},
+          {type: "Number (Float)", actual: 1.1},
+          {type: "Array", actual: []},
+          {type: "Object", actual: {}},
+          {type: "true", actual: true},
+          {type: "false", actual: false},
+          {type: "null", actual: nil},
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
 
-            if hash.fetch(:should_match)
-              it "DOES match" do
-                should be_json.with_content(expected)
-              end
-            else
-              it "does NOT match" do
-                should_not be_json.with_content(expected)
-              end
+            it "DOES match" do
+              should be_json.with_content(expected)
             end
           end
         end
