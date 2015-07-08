@@ -30,7 +30,7 @@ module RSpec
         # @return [Boolean]
         #   `true` if #actual & #expected are the same
         def compare
-          if has_matched_value_2?
+          if has_matched_value?
             return ComparisonResult.new(true, reasons)
           end
 
@@ -40,10 +40,6 @@ module RSpec
         private
 
         def has_matched_value?
-          raise NotImplementedError
-        end
-
-        def has_matched_value_2?
           value_matching_proc.call(expected, actual)
         end
 
