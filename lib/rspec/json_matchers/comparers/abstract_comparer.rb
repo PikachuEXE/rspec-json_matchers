@@ -66,23 +66,41 @@ module RSpec
 
         # @note with side effect on `#reasons`
         def has_matched_values?
-          if expected.is_a?(Array)
-            expected.each_index.all? do |index|
-              next false unless index < actual.size
+          {
+            Array => -> { has_matched_array_values? },
+            Hash  => -> { has_matched_hash_values? },
+          }.fetch(expected.class).call
+        end
 
-              result = self.class.compare(actual[index], expected[index], reasons, value_matching_proc)
-              result.matched?.tap do |matched|
-                @reasons = result.reasons.unshift("[#{index}]") unless matched
-              end
-            end
-          else
-            expected.each_key.all? do |key|
-              next false unless actual.key?(key.to_s)
+        def has_matched_array_values?
+          has_matched_something_values?(
+            expected.each_index,
+            -> (index) { index < actual.size },
+            -> (index) { self.class.compare(actual[index], expected[index], reasons, value_matching_proc) },
+            -> (index) { "[#{index}]" }
+          )
+        end
 
-              result = self.class.compare(actual[key.to_s], expected[key], reasons, value_matching_proc)
-              result.matched?.tap do |matched|
-                @reasons = result.reasons.unshift(key.to_s) unless matched
-              end
+        def has_matched_hash_values?
+          has_matched_something_values?(
+            expected.each_key,
+            -> (key) { actual.key?(key.to_s) },
+            -> (key) { self.class.compare(actual[key.to_s], expected[key], reasons, value_matching_proc) },
+            -> (key) { key }
+          )
+        end
+
+        def has_matched_something_values?(
+            enumerator,
+            continue_proc,
+            result_proc,
+            reason_proc)
+          enumerator.all? do |element|
+            next false unless continue_proc.call(element)
+
+            result = result_proc.call(element)
+            result.matched?.tap do |matched|
+              @reasons = result.reasons.unshift(reason_proc.call(element)) unless matched
             end
           end
         end
