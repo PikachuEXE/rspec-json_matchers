@@ -222,9 +222,6 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
 
       context "when expected is NOT a `Proc`, and respond_to `#call`" do
         context "and it's an instance of a custom class" do
-          let(:callable_class) do
-            class_double("CallableClass", new: callable)
-          end
           let(:callable) do
             instance_double("CallableInstance",
               call: callable_return_value,
