@@ -41,6 +41,10 @@ module RSpec
         class CallableExpectation < Expectation
           extend AbstractClass
 
+          # The replacement of {.new}
+          # It accept any number of arguments
+          #
+          # @return [Expectation] an expectation object
           def self.[](*values)
             new(*values)
           end
@@ -54,6 +58,8 @@ module RSpec
         class SingleValueCallableExpectation < CallableExpectation
           EXPECTED_VALUE_SIZE = 1
 
+          # (see CallableExpectation.[])
+          # But only 1 argument is accepted
           def self.[](*values)
             unless values.size == EXPECTED_VALUE_SIZE
               raise ArgumentError, "Exactly #{EXPECTED_VALUE_SIZE} argument is required"
@@ -68,11 +74,17 @@ module RSpec
         class CompositeExpectation < CallableExpectation
           extend AbstractClass
 
+          private
           attr_reader :expectations
+          public
 
+          # (see CallableExpectation.[])
+          # Also all values will be converted into expectations
           def self.[](*values)
             super(build_many(values))
           end
+
+          private
 
           def initialize(expectations)
             @expectations = expectations

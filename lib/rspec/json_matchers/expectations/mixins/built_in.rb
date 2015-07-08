@@ -80,15 +80,13 @@ module RSpec
           # Validates `value` to be {Array}
           # And uses stored expectation for checking all elements of `value`
           class ArrayOf < Expectations::Core::SingleValueCallableExpectation
+            EXPECTED_VALUE_CLASS = Array
+
+            private
             attr_reader :children_elements_expectation
             attr_reader :empty_allowed
             alias_method :empty_allowed?, :empty_allowed
-            EXPECTED_VALUE_CLASS = Array
-
-            def initialize(value)
-              @children_elements_expectation = Expectation.build(value)
-              @empty_allowed = true
-            end
+            public
 
             def expect?(value)
               value.is_a?(EXPECTED_VALUE_CLASS) &&
@@ -110,6 +108,13 @@ module RSpec
             # @return (see #allow_empty)
             def disallow_empty
               allow_empty(false)
+            end
+
+            private
+
+            def initialize(value)
+              @children_elements_expectation = Expectation.build(value)
+              @empty_allowed = true
             end
           end
 

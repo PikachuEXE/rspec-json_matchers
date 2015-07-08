@@ -4,6 +4,10 @@ module RSpec
   module JsonMatchers
     module Matchers
       # @api
+      #
+      # Used for verifying actual is a valid JSON string
+      #
+      # @return [BeJsonMatcher]
       def be_json
         BeJsonMatcher.new
       end
@@ -24,14 +28,22 @@ module RSpec
           !matches?(*args)
         end
 
-        # includes expected, not exactly equal
         # @api
+        #
+        # Get a matcher that try to match the content of actual
+        # with nested various expectations
+        #
+        # @return [BeJsonWithContentMatcher] a matcher object
         def with_content(expected)
           BeJsonWithContentMatcher.new(expected)
         end
 
-        # includes expected, not exactly equal
         # @api
+        #
+        # Get a matcher that try to match the content of actual
+        # with nested expectations about array sizes
+        #
+        # @return [BeJsonWithSizesMatcher] a matcher object
         def with_sizes(expected)
           BeJsonWithSizesMatcher.new(expected)
         end

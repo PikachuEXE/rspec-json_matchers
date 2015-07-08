@@ -15,14 +15,18 @@ module RSpec
         # Takes exactly one object
         # Use stored value & `==` for checking `value`
         class Eq < Core::SingleValueCallableExpectation
+          private
           attr_reader :expected_value
-
-          def initialize(value)
-            @expected_value = value
-          end
+          public
 
           def expect?(value)
             value == expected_value
+          end
+
+          private
+
+          def initialize(value)
+            @expected_value = value
           end
         end
 
@@ -37,16 +41,21 @@ module RSpec
         #   and raise error if other things passed in
         #   in the future
         class KindOf < Core::SingleValueCallableExpectation
-          attr_reader :expected_class
           EXPECTED_CLASS = Class
+
+          private
+          attr_reader :expected_class
+          public
+
+          def expect?(value)
+            value.is_a?(expected_class)
+          end
+
+          private
 
           def initialize(value)
             raise ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
             @expected_class = value
-          end
-
-          def expect?(value)
-            value.is_a?(expected_class)
           end
         end
 
@@ -56,16 +65,20 @@ module RSpec
         # Takes exactly one object
         # Use stored proc for checking `value`
         class InRange < Core::SingleValueCallableExpectation
-          attr_reader :range
           EXPECTED_CLASS = Range
+          private
+          attr_reader :range
+          public
+
+          def expect?(value)
+            range.cover?(value)
+          end
+
+          private
 
           def initialize(value)
             raise ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
             @range = value
-          end
-
-          def expect?(value)
-            range.cover?(value)
           end
         end
 
@@ -75,18 +88,23 @@ module RSpec
         # Takes exactly one object
         # Use stored regexp for checking `value`
         class MatchingRegexp < Core::SingleValueCallableExpectation
-          attr_reader :regexp
           EXPECTED_CLASS = Regexp
 
-          def initialize(value)
-            raise ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
-            @regexp = value
-          end
+          private
+          attr_reader :regexp
+          public
 
           def expect?(value)
             # regex =~ string seems to be fastest
             # @see https://stackoverflow.com/questions/11887145/fastest-way-to-check-if-a-string-matches-or-not-a-regexp-in-ruby
             value.is_a?(String) && !!(regexp =~ value)
+          end
+
+          private
+
+          def initialize(value)
+            raise ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
+            @regexp = value
           end
         end
 
@@ -96,15 +114,19 @@ module RSpec
         # Takes exactly one object
         # Use stored proc for checking `value`
         class SatisfyingCallable < Core::SingleValueCallableExpectation
+          private
           attr_reader :callable
+          public
+
+          def expect?(value)
+            callable.call(value)
+          end
+
+          private
 
           def initialize(value)
             raise ArgumentError, "an object which respond to `:call` is required" unless value.respond_to?(:call)
             @callable = value
-          end
-
-          def expect?(value)
-            callable.call(value)
           end
         end
 
@@ -121,9 +143,8 @@ module RSpec
         # @api private
         #   Used internally by a matcher method
         #
-        # @note
-        #   Comparing to {Expectations::Mixins::BuiltIn::ArrayWithSize}
-        #   This also accepts `Hash` and `Array`, and return false for collection matching
+        # Comparing to {Expectations::Mixins::BuiltIn::ArrayWithSize}
+        # This also accepts `Hash` and `Array`, and return false for collection matching
         class ArrayWithSize < Expectations::Mixins::BuiltIn::ArrayWithSize
           # `Fixnum` & `Bignum` will be returned instead of `Integer`
           # in `#class` for numbers
