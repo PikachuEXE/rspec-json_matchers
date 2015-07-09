@@ -54,7 +54,7 @@ module RSpec
         end
 
         def with_exact_keys(exactly = true)
-          @with_exact_keys = exactly
+          @with_exact_keys = !!exactly
           self
         end
 
