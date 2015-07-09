@@ -41,11 +41,15 @@ module RSpec
             string_path.split(PATH_PART_SPLITTER)
           end
 
+          # Return successful extraction result when path is empty
+          # Return failed extraction result when path is invalid
+          # Delegate to {Extractor} otherwise
+          #
           # @return [ExtractionResult] The result of object extraction
           def extract(object)
             return ExtractionResult.new(object, true) if empty?
             return ExtractionResult.new(object, false) if invalid?
-            Extractor.extract(object, self)
+            Extractor.new(object, self).extract
           end
 
           private
