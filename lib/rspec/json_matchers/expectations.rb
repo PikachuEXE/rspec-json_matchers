@@ -6,6 +6,8 @@ module RSpec
   module JsonMatchers
     # This module does not mean to have any expectation class
     # Use the structure like {Expectations::BuiltIn}
+    #
+    # @api private
     module Expectations
     end
   end

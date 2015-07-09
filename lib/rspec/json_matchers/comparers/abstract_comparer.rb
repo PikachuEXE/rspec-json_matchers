@@ -8,6 +8,11 @@ module RSpec
     module Comparers
       # @api private
       # @abstract
+      #
+      # The parent of all comparer classes
+      # It holds most of the responsibility
+      # The subclasses only need to implement the behaviour of matching keys
+      # when both expected & actual are same type of collection
       class AbstractComparer
         attr_reader *[
           :actual,
@@ -91,6 +96,16 @@ module RSpec
             :comparer_class,
           ]
 
+          # Create a "matching" operation object that can return a {Comparers::ComparisonResult}
+          #
+          # @param expected [Object] the expected "thing", should be an {Enumerable}
+          # @param actual [Object] the actual "thing", should be an {Enumerable}
+          # @param reasons [Array<String>]
+          #   failure reasons, mostly the path parts
+          # @param value_matching_proc [Proc]
+          #   the proc that actually compares the expected & actual and returns a boolean
+          # @param comparer_class [Class<AbstractComparer>]
+          #   the class that should be used recursively
           def initialize(expected, actual, reasons, value_matching_proc, comparer_class)
             @actual   = actual
             @expected = expected

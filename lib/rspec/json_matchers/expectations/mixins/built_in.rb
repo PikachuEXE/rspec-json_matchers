@@ -11,6 +11,10 @@ module RSpec
       module Mixins
         # @api
         #   All classes within module should be able to be used / extended
+        #
+        # A group of expectation classes provided by this gem
+        # Other extension gems (if any) should create another namespace
+        # if they intend to provide extra expectation classes
         module BuiltIn
           # Whatever the value is, it just passes
           # A more verbose solution than passing {Object} in

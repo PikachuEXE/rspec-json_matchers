@@ -10,6 +10,9 @@ module RSpec
     module Matchers
       # @api private
       # @abstract
+      #
+      # Parent of matcher classes that requires {#at_path} & {#with_exact_keys}
+      # This is not merged with {BeJsonMatcher} since it should be able to be used alone
       class BeJsonWithSomethingMatcher < BeJsonMatcher
         extend AbstractClass
 
@@ -47,12 +50,35 @@ module RSpec
           result.object
         end
 
-        # This does NOT raise error to make result looks good
+        # Sets the path to be used for object, to avoid passing a deep nested {Hash} or {Array} as expectation
+        # Defaults to "" (if this is not called)
+        # The path uses period (".") as separator for parts
+        # (also period cannot be used as path name as a side-effect, but who does?)
+        # This does NOT raise error if the path is invalid
+        # (like having 2 periods, 1 period at the start/end of string)
+        # But it will fail the example with both `should` & `should_not`
+        #
+        # @param path [String] the "path" to be used
+        #
+        # @return [BeJsonWithSomethingMatcher] the match itself
+        #
+        # @throw [TypeError] when input is not a string
         def at_path(path)
           @path = JsonMatchers::Utils::KeyPath::Path.new(path)
           self
         end
 
+        # When `exactly` is `true`,
+        # makes the matcher to fail the example
+        # when actual has more elements than expected even expectation passes
+        #
+        # When `exactly` is `true`,
+        # makes the matcher to pass the example
+        # when actual has more elements than expected and expectation passes
+        #
+        # @param exactly [Boolean] whether the matcher should match keys in actual & expected exactly
+        #
+        # @return (see #at_path)
         def with_exact_keys(exactly = true)
           @with_exact_keys = !!exactly
           self

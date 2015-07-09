@@ -4,6 +4,9 @@ module RSpec
   module JsonMatchers
     module Comparers
       # @api private
+      #
+      # The comparer class that disallow actual collection
+      # to have more properties/elements than expected collection
       class ExactKeysComparer < AbstractComparer
         private
 
