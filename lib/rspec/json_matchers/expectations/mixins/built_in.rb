@@ -1,6 +1,7 @@
 require "abstract_class"
 
 require_relative "../core"
+require_relative "../abstract"
 
 module RSpec
   module JsonMatchers
@@ -23,28 +24,10 @@ module RSpec
             end
           end
 
-          # @api private
-          # @abstract
-          #   Only for reducing code duplication
-          #
-          # @note
-          #   {Numeric} might not be the best class to check for
-          #   Since not all subclasses of it are expected
-          #   But for simplicity's sake this is used until problem raised
-          class NumericExpectation < Expectations::Core::SingletonExpectation
-            extend AbstractClass
-
-            EXPECTED_VALUE_CLASS = Numeric
-
-            def expect?(value)
-              value.is_a?(EXPECTED_VALUE_CLASS)
-            end
-          end
-
           # Checks the value is a {Numeric} & less then zero
           #
-          # @note (see NumericExpectation)
-          class PositiveNumber < NumericExpectation
+          # @note (see Expectations::Private::NumericExpectation)
+          class PositiveNumber < Expectations::Abstract::NumericExpectation
             EXPECTED_VALUE_CLASS = Numeric
 
             def expect?(value)
@@ -54,8 +37,8 @@ module RSpec
 
           # Checks the value is a {Numeric} & less then zero
           #
-          # @note (see NumericExpectation)
-          class NegativeNumber < NumericExpectation
+          # @note (see Expectations::Private::NumericExpectation)
+          class NegativeNumber < Expectations::Abstract::NumericExpectation
             EXPECTED_VALUE_CLASS = Numeric
 
             def expect?(value)
