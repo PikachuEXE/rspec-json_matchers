@@ -84,8 +84,6 @@ module RSpec
 
             private
             attr_reader :children_elements_expectation
-            attr_reader :empty_allowed
-            alias_method :empty_allowed?, :empty_allowed
             public
 
             def expect?(value)
@@ -115,6 +113,10 @@ module RSpec
             def initialize(value)
               @children_elements_expectation = Expectation.build(value)
               @empty_allowed = true
+            end
+
+            def empty_allowed?
+              !!@empty_allowed
             end
           end
 
