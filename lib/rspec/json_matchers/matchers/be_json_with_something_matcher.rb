@@ -108,7 +108,7 @@ module RSpec
         def expected_and_actual_matched?
           extracted_actual = actual
           return false if has_path_error?
-          result = comparer_klass.compare(extracted_actual, expected, reasons, value_matching_proc)
+          result = comparer_klass.new(extracted_actual, expected, reasons, value_matching_proc).compare
 
           result.matched?.tap do |matched|
             @reasons = result.reasons unless matched

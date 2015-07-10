@@ -21,10 +21,6 @@ module RSpec
           :value_matching_proc,
         ]
 
-        def self.compare(*args)
-          new(*args).compare
-        end
-
         def initialize(actual, expected, reasons, value_matching_proc)
           @actual   = actual
           @expected = expected
@@ -178,12 +174,13 @@ module RSpec
 
             def result
               @result ||= comparer_class.
-                compare(
+                new(
                   actual_for_element,
                   expected_for_element,
                   reasons,
                   value_matching_proc,
-                )
+                ).
+                compare
             end
 
             def actual_contain_element?
