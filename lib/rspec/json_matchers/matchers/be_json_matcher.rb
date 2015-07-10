@@ -33,6 +33,9 @@ module RSpec
         # Get a matcher that try to match the content of actual
         # with nested various expectations
         #
+        # @param expected [Hash, Array, Object]
+        #   the expectation object
+        #
         # @return [BeJsonWithContentMatcher] a matcher object
         def with_content(expected)
           BeJsonWithContentMatcher.new(expected)
@@ -43,20 +46,32 @@ module RSpec
         # Get a matcher that try to match the content of actual
         # with nested expectations about array sizes
         #
+        # @param expected [Hash, Array, Object]
+        #   the expectation object
+        #
         # @return [BeJsonWithSizesMatcher] a matcher object
         def with_sizes(expected)
           BeJsonWithSizesMatcher.new(expected)
         end
 
+        # Expectation description in spec result summary
+        #
+        # @return [String]
         def description
           "be a valid JSON string"
         end
 
+        # Failure message displayed when a positive example failed (e.g. using `should`)
+        #
+        # @return [String]
         def failure_message_for_positive
           "expected value to be parsed as JSON, but failed"
         end
         alias :failure_message :failure_message_for_positive
 
+        # Failure message displayed when a negative example failed (e.g. using `should_not`)
+        #
+        # @return [String]
         def failure_message_for_negative
           "expected value not to be parsed as JSON, but succeeded"
         end

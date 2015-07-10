@@ -8,6 +8,9 @@ module RSpec
       # @api
       #   All classes within module should be able to be used / extended
       #   Unless specified otherwise
+      #
+      # All public expectation classes that can be extended
+      # even by classes in extension gems
       module Core
         # @abstract
         #   This class MUST be used after being inherited
@@ -42,7 +45,10 @@ module RSpec
           extend AbstractClass
 
           # The replacement of {.new}
-          # It accept any number of arguments
+          # It accept any number of arguments and delegates to private {.new}
+          # This pattern is taken from gem `contracts`
+          #
+          # @see https://github.com/egonSchiele/contracts.ruby
           #
           # @return [Expectation] an expectation object
           def self.[](*values)
@@ -57,6 +63,7 @@ module RSpec
         # @abstract
         class SingleValueCallableExpectation < CallableExpectation
           EXPECTED_VALUE_SIZE = 1
+          private_constant :EXPECTED_VALUE_SIZE
 
           # (see CallableExpectation.[])
           # But only 1 argument is accepted

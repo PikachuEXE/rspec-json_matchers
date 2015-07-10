@@ -8,6 +8,10 @@ module RSpec
     module Expectations
       # @api
       #   The modules under this module can be included (in RSpec)
+      #
+      # If this gem or extensions gems decide to add different groups of expectations classes
+      # Which aim to be included in example groups
+      # They should add the namespace modules here
       module Mixins
         # @api
         #   All classes within module should be able to be used / extended
@@ -32,8 +36,6 @@ module RSpec
           #
           # @note (see Expectations::Private::NumericExpectation)
           class PositiveNumber < Expectations::Abstract::NumericExpectation
-            EXPECTED_VALUE_CLASS = Numeric
-
             def expect?(value)
               super && value > 0
             end
@@ -43,8 +45,6 @@ module RSpec
           #
           # @note (see Expectations::Private::NumericExpectation)
           class NegativeNumber < Expectations::Abstract::NumericExpectation
-            EXPECTED_VALUE_CLASS = Numeric
-
             def expect?(value)
               super && value < 0
             end
@@ -56,8 +56,6 @@ module RSpec
           #   The class does use name Boolean since so many gems uses it already
           #   You can also use gems like https://github.com/janlelis/boolean2/
           class BooleanValue < Expectations::Core::SingletonExpectation
-            EXPECTED_VALUE_CLASS = Numeric
-
             def expect?(value)
               true == value || false == value
             end
@@ -67,20 +65,22 @@ module RSpec
           # Validates `value` to be {Array}
           # And uses stored expectation for checking all elements of `value`
           class ArrayOf < Expectations::Core::SingleValueCallableExpectation
-            EXPECTED_VALUE_CLASS = Array
-
             private
             attr_reader :children_elements_expectation
             public
 
             def expect?(value)
-              value.is_a?(EXPECTED_VALUE_CLASS) &&
+              value.is_a?(Array) &&
                 (empty_allowed? || !value.empty?) &&
                 value.all? {|v| children_elements_expectation.expect?(v) }
             end
 
             # {Enumerable#all?} returns `true` when collection is empty
-            # So we provide a way to reject an empty collection
+            # So this method can be called to signal the expectation to do or do not expect an empty collection
+            #
+            # @param allow [Boolean]
+            #   optional
+            #   Should empty collection be "expected"
             #
             # @return [ArrayOf] the matcher itself
             def allow_empty(allow = true)
@@ -136,8 +136,6 @@ module RSpec
           #   Combine {AllOf} & {ArrayWithSize}
           #   Or raise an issue to add support for switching to "and" with another method call
           class ArrayWithSize < AnyOf
-            EXPECTED_VALUE_CLASS = Array
-
             # `Fixnum` & `Bignum` will be returned instead of `Integer`
             # in `#class` for numbers
             EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = {
@@ -145,6 +143,7 @@ module RSpec
               Bignum  => -> (v) { Expectations::Private::Eq[v] },
               Range   => -> (v) { Expectations::Private::InRange[v] },
             }.freeze
+            private_constant :EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING
 
             class << self
               # Overrides {Expectation.build}
@@ -152,7 +151,7 @@ module RSpec
                 expectation_classes_mappings.fetch(value.class) do
                   -> (_) { raise ArgumentError, <<-ERR }
                     Expected expection(s) to be kind of
-                    #{EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING.keys.inspect}
+                    #{expectation_classes_mappings.keys.inspect}
                     but found #{value.inspect}
                   ERR
                 end.call(value)
@@ -167,7 +166,7 @@ module RSpec
             end
 
             def expect?(value)
-              value.is_a?(EXPECTED_VALUE_CLASS) &&
+              value.is_a?(Array) &&
                 super(value.size)
             end
           end

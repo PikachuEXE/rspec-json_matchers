@@ -21,6 +21,17 @@ module RSpec
           :value_matching_proc,
         ]
 
+        # Creates a comparer that actually use the {value_matching_proc} for matching {#actual} and {#expected}
+        # This class is respossible to aggregating
+        # the matching result for each element of {#expected},
+        # and compare the keys/indices as well
+        #
+        # @param actual [Object] the actual value
+        # @param expected [Object] the expected value
+        # @param reasons [Array<String>]
+        #   failure reasons, mostly the path parts
+        # @param value_matching_proc [Proc]
+        #   the proc that actually compares the expected & actual and returns a boolean
         def initialize(actual, expected, reasons, value_matching_proc)
           @actual   = actual
           @expected = expected
@@ -83,6 +94,7 @@ module RSpec
         class HasMatchedValues
           extend AbstractClass
 
+          private
           attr_reader *[
             :actual,
             :expected,
@@ -91,6 +103,7 @@ module RSpec
 
             :comparer_class,
           ]
+          public
 
           # Create a "matching" operation object that can return a {Comparers::ComparisonResult}
           #
@@ -140,6 +153,7 @@ module RSpec
           class HasMatchedValue
             extend AbstractClass
 
+            private
             attr_reader *[
               :element,
 
@@ -151,7 +165,13 @@ module RSpec
 
               :comparer_class,
             ]
+            public
 
+            # Create a "matching" operation object that can return a {Comparers::ComparisonResult}
+            # Unlike {HasMatchedValues}, this is for an element of `expected`
+            #
+            # @param element [Integer, String, Symbol] a index/key from expected (not value)
+            # @param (see HasMatchedValues#initialize)
             def initialize(element, expected, actual, reasons, value_matching_proc, comparer_class)
               @element  = element
               @actual   = actual
@@ -171,6 +191,8 @@ module RSpec
                 result.reasons.push(reason)
               end
             end
+
+            private
 
             def result
               @result ||= comparer_class.
@@ -210,7 +232,9 @@ module RSpec
           end
 
           class HasMatchedArrayValue < HasMatchedValues::HasMatchedValue
+            private
             alias_method :index, :element
+            public
 
             def actual_contain_element?
               index < actual.size
@@ -239,7 +263,9 @@ module RSpec
           end
 
           class HasMatchedHashValue < HasMatchedValues::HasMatchedValue
+            private
             alias_method :key, :element
+            public
 
             def actual_contain_element?
               actual.key?(key.to_s)

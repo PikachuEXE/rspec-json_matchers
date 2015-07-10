@@ -8,6 +8,12 @@ module RSpec
     module Expectations
       # @api private
       #   All classes within module should NOT be able to be used directly / extended
+      #
+      # All classes in this module are internal expectations used when non-expectation object/class is passed in
+      # Extension gems should have their own namespace and should NOT add new classes to this namespace
+      # Classes here have dependency on {Core} & {Mixins::BuiltIn}
+      #
+      # TODO: Remove dependency on {Mixins::BuiltIn}
       module Private
         # @api private
         #   User should just pass an object in
@@ -42,6 +48,7 @@ module RSpec
         #   in the future
         class KindOf < Core::SingleValueCallableExpectation
           EXPECTED_CLASS = Class
+          private_constant :EXPECTED_CLASS
 
           private
           attr_reader :expected_class
@@ -66,6 +73,8 @@ module RSpec
         # Use stored proc for checking `value`
         class InRange < Core::SingleValueCallableExpectation
           EXPECTED_CLASS = Range
+          private_constant :EXPECTED_CLASS
+
           private
           attr_reader :range
           public
@@ -89,6 +98,7 @@ module RSpec
         # Use stored regexp for checking `value`
         class MatchingRegexp < Core::SingleValueCallableExpectation
           EXPECTED_CLASS = Regexp
+          private_constant :EXPECTED_CLASS
 
           private
           attr_reader :regexp
@@ -152,6 +162,7 @@ module RSpec
             Array   => -> (_) { Expectations::Private::Nothing::INSTANCE },
             Hash    => -> (_) { Expectations::Private::Nothing::INSTANCE },
           }.freeze
+          private_constant :ADDITIONAL_EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING
 
           class << self
             private

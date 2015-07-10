@@ -16,8 +16,6 @@ module RSpec
       class BeJsonWithSomethingMatcher < BeJsonMatcher
         extend AbstractClass
 
-        PATH_PART_SPLITTER = ".".freeze
-
         attr_reader *[
           :expected,
           :path,
@@ -43,7 +41,11 @@ module RSpec
           super
         end
 
-        # Override
+        # Override {BeJsonMatcher#actual}
+        # It return actual object extracted by {#path}
+        # And also detect & set state for path error (either it's invalid or fails to extract)
+        #
+        # @return [Object] extracted object but could be object in the middle when extraction failed
         def actual
           result = path.extract(super)
           has_path_error! if result.failed?
