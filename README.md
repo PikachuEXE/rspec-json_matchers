@@ -488,6 +488,16 @@ there is no such matcher.
 Just use `be_json.with_content` with classes.  
 
 
+## Pitfalls
+
+### Error message colorized output in RubyMine
+
+Add something like
+`-rawesome_print -e "AwesomePrint.defaults={plain: true}"` to `Ruby arguments`
+for `Run/Debug Configurations => Defaults => RSpec`  
+That way you could keep the color when running `rspec` from console
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/PikachuEXE/rspec-json_matchers/fork )
