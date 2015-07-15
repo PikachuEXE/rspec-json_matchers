@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rspec/json_matchers/version'
+require "rspec/json_matchers/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "rspec-json_matchers"
@@ -9,16 +9,18 @@ Gem::Specification.new do |spec|
   spec.authors       = ["PikachuEXE"]
   spec.email         = ["pikachuexe@gmail.com"]
 
-  spec.summary       = %q{A collection of RSpec matchers for testing JSON data.}
+  spec.summary       = "A collection of RSpec matchers for testing JSON data."
   spec.description   = <<-DESC
     This gem provides a collection of RSpec matchers for testing JSON data.
-    It aims to make JSON testing flexible & easier, especially for testing multiple properties.
+    It aims to make JSON testing flexible & easier,
+    especially for testing multiple properties.
     It does not and will not have anything related to JSON Schema.
   DESC
   spec.homepage      = "https://github.com/PikachuEXE/rspec-json_matchers"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = `git ls-files -z`.split("\x0").
+    reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]

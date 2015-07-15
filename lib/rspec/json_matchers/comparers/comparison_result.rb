@@ -14,7 +14,7 @@ module RSpec
         end
 
         def matched?
-          !!@matched
+          @matched
         end
       end
     end

@@ -14,9 +14,11 @@ module RSpec
       module Core
         # @abstract
         #   This class MUST be used after being inherited
-        #   Subclasses will have a constant `INSTANCE` storing the only instance of that class
+        #   Subclasses will have a constant `INSTANCE`
+        #   storing the only instance of that class
         # @note
-        #   This class assumed descendants to NOT override {.inherited} or call `super` if overridden
+        #   This class assumed descendants to NOT
+        #   override {.inherited} or call `super` if overridden
         #   Otherwise the constant `INSTANCE` won't work
         # @note
         #   The constant `INSTANCE` will be referred with namespace,
@@ -69,21 +71,21 @@ module RSpec
           # But only 1 argument is accepted
           def self.[](*values)
             unless values.size == EXPECTED_VALUE_SIZE
-              raise ArgumentError, "Exactly #{EXPECTED_VALUE_SIZE} argument is required"
+              fail(
+                ArgumentError,
+                "Exactly #{EXPECTED_VALUE_SIZE} argument is required",
+              )
             end
             super
           end
         end
 
-        # Takes any number of objects and converts into expectation objects (if not already)
+        # Takes any number of objects and
+        # converts into expectation objects (if not already)
         #
         # @abstract
         class CompositeExpectation < CallableExpectation
           extend AbstractClass
-
-          private
-          attr_reader :expectations
-          public
 
           # (see CallableExpectation.[])
           # Also all values will be converted into expectations
@@ -92,6 +94,8 @@ module RSpec
           end
 
           private
+
+          attr_reader :expectations
 
           def initialize(expectations)
             @expectations = expectations

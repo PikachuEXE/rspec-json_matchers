@@ -3,7 +3,8 @@ require "abstract_class"
 module RSpec
   module JsonMatchers
     # Represents an expectation of an object (usually called `expected`)
-    # Built to avoid {Object#===} usage like other matcher gems, like `rspec-json_matcher`
+    # Built to avoid {Object#===} usage like other matcher gems,
+    # like `rspec-json_matcher`
     # Actually `rspec-mocks` `3.x` also uses it, but only internally
     #
     # @api
@@ -11,18 +12,20 @@ module RSpec
     #   But only used for this gem
     # @abstract
     #   This class MUST be used after being inherited
-    #   Subclasses MUST override {#expect?} to allow this gem to determine the test result
+    #   Subclasses MUST override {#expect?}
+    #   to allow this gem to determine the test result
     class Expectation
       extend AbstractClass
 
       # @abstract
-      #   This method MUST be overridden to allow this gem to determine the test result
+      #   This method MUST be overridden
+      #   to allow this gem to determine the test result
       #
       # @param value [Object] actual value to be evaluated
       #
       # @return [Bool] Whether the `value` is expected
-      def expect?(value)
-        raise NotImplementedError
+      def expect?(_value)
+        fail NotImplementedError
       end
 
       class << self
@@ -41,9 +44,7 @@ module RSpec
             return Expectations::Private::MatchingRegexp[value]
           end
 
-          if value.is_a?(Range)
-            return Expectations::Private::InRange[value]
-          end
+          return Expectations::Private::InRange[value] if value.is_a?(Range)
 
           if value.respond_to?(:call)
             return Expectations::Private::SatisfyingCallable[value]
@@ -67,7 +68,7 @@ module RSpec
         # @return [Array<Expectation>]
         # @see .build
         def build_many(values)
-          values.flat_map{|v| build(v) }
+          values.flat_map { |v| build(v) }
         end
       end
     end

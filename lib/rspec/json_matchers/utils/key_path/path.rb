@@ -6,26 +6,33 @@ module RSpec
     module Utils
       # @api private
       module KeyPath
+        # Represents a path pointing to an element
+        # of a {Hash} or {Array}
         class Path
           # The "path part" separator
           # Period is used since it's the least used char as part of a key name
           # (it can never by used for index anyway)
-          # As a side effect this char CANNOT be used, escaping is not planned to be added
+          # As a side effect this char CANNOT be used,
+          # escaping is not planned to be added
           PATH_PART_SPLITTER = ".".freeze
           # The regular expression for checking "invalid" path
           # The separator should NOT at the start/end of the string,
           # or repeating itself without other chars in between
-          INVALID_PATH_REGEX = %r_(
+          INVALID_PATH_REGEX = /
+          (
           ^#{Regexp.escape(PATH_PART_SPLITTER)}
           |
           #{Regexp.escape(PATH_PART_SPLITTER)}{2,}
           |
           #{Regexp.escape(PATH_PART_SPLITTER)}$
-          )_x.freeze
+          )
+          /x.freeze
 
           # Creates a {Path}
-          # with a {String} (mainly from external) (will store it internally)
-          # or a {Path} (mainly from internal) (will get and assign the string path it internally)
+          # with a {String} (mainly from external)
+          # (will store it internally)
+          # or a {Path} (mainly from internal)
+          # (will get and assign the string path it internally)
           #
           # @note
           #   It does not copy the string object since there is not need
@@ -43,7 +50,7 @@ module RSpec
             when String
               @string_path = path
             else
-              raise TypeError, "Only String and Path is expected"
+              fail TypeError, "Only String and Path is expected"
             end
           end
 

@@ -14,8 +14,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
         a: expected_size,
       }
     end
-    let(:actual_value) { raise NotImplementedError }
-    let(:expected_value) { raise NotImplementedError }
+    let(:actual_value) { fail NotImplementedError }
+    let(:expected_value) { fail NotImplementedError }
 
     context "and is an Integer" do
       let(:expected_size) { 1 }

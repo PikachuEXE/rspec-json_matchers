@@ -252,7 +252,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
         [
           [
             1,
-          ]
+          ],
         ]
       end
       # Cannot find better alternative
@@ -268,7 +268,9 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       context "and subject has different content then expected" do
         context "the only difference is the content of the deepest key" do
           before do
-            expected[0] = expected[0].tap{|a| a[0] = a[0] + 1}
+            expected[0] = expected[0].tap do |a|
+              a[0] = a[0] + 1
+            end
           end
 
           it "does NOT match" do
@@ -295,8 +297,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
           [
             [
               1,
-            ]
-          ]
+            ],
+          ],
         ]
       end
       # Cannot find better alternative
@@ -312,7 +314,11 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       context "and subject has different content then expected" do
         context "the only difference is the content of the deepest key" do
           before do
-            expected[0] = expected[0].tap{|a1| a1[0] = a1[0].tap{|a2| a2[0] = a2[0] + 1}}
+            expected[0] = expected[0].tap do |a1|
+              a1[0] = a1[0].tap do |a2|
+                a2[0] = a2[0] + 1
+              end
+            end
           end
 
           it "does NOT match" do
@@ -321,7 +327,9 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
         end
         context "the only difference is the nesting" do
           before do
-            expected[0] = expected[0].tap{|a1| a1[0] = 1}
+            expected[0] = expected[0].tap do |a1|
+              a1[0] = 1
+            end
           end
 
           it "does NOT match" do

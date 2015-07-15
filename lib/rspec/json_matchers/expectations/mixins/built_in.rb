@@ -9,7 +9,8 @@ module RSpec
       # @api
       #   The modules under this module can be included (in RSpec)
       #
-      # If this gem or extensions gems decide to add different groups of expectations classes
+      # If this gem or extensions gems decide to
+      # add different groups of expectations classes
       # Which aim to be included in example groups
       # They should add the namespace modules here
       module Mixins
@@ -22,7 +23,8 @@ module RSpec
         module BuiltIn
           # Whatever the value is, it just passes
           # A more verbose solution than passing {Object} in
-          # (That also works since everything parsed by {JSON} inherits from {Object})
+          # (That also works since everything parsed
+          # by {JSON} inherits from {Object})
           #
           # @example
           #   { key_with_unstable_content => Anything }
@@ -61,22 +63,20 @@ module RSpec
             end
           end
 
-          # Takes exactly one object and converts to an expectation object (if not already)
+          # Takes exactly one object and converts to
+          # an expectation object (if not already)
           # Validates `value` to be {Array}
           # And uses stored expectation for checking all elements of `value`
           class ArrayOf < Expectations::Core::SingleValueCallableExpectation
-            private
-            attr_reader :children_elements_expectation
-            public
-
             def expect?(value)
               value.is_a?(Array) &&
                 (empty_allowed? || !value.empty?) &&
-                value.all? {|v| children_elements_expectation.expect?(v) }
+                value.all? { |v| children_elements_expectation.expect?(v) }
             end
 
             # {Enumerable#all?} returns `true` when collection is empty
-            # So this method can be called to signal the expectation to do or do not expect an empty collection
+            # So this method can be called to signal the expectation to
+            # do or do not expect an empty collection
             #
             # @param allow [Boolean]
             #   optional
@@ -84,7 +84,7 @@ module RSpec
             #
             # @return [ArrayOf] the matcher itself
             def allow_empty(allow = true)
-              @empty_allowed = !!allow
+              @empty_allowed = allow
               self
             end
 
@@ -97,13 +97,15 @@ module RSpec
 
             private
 
+            attr_reader :children_elements_expectation
+
             def initialize(value)
               @children_elements_expectation = Expectation.build(value)
               @empty_allowed = true
             end
 
             def empty_allowed?
-              !!@empty_allowed
+              @empty_allowed
             end
           end
 
@@ -134,7 +136,8 @@ module RSpec
           # @note
           #   For behaviour of "and" (which should be a rare case)
           #   Combine {AllOf} & {ArrayWithSize}
-          #   Or raise an issue to add support for switching to "and" with another method call
+          #   Or raise an issue to add support for
+          #   switching to "and" with another method call
           class ArrayWithSize < AnyOf
             # `Fixnum` & `Bignum` will be returned instead of `Integer`
             # in `#class` for numbers
@@ -149,7 +152,7 @@ module RSpec
               # Overrides {Expectation.build}
               def build(value)
                 expectation_classes_mappings.fetch(value.class) do
-                  -> (_) { raise ArgumentError, <<-ERR }
+                  -> (_) { fail ArgumentError, <<-ERR }
                     Expected expection(s) to be kind of
                     #{expectation_classes_mappings.keys.inspect}
                     but found #{value.inspect}

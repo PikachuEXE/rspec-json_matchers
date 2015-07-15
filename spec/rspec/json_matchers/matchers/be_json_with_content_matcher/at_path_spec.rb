@@ -1,6 +1,9 @@
 require "spec_helper"
 
-RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher, "#at_path" do
+RSpec.describe(*[
+  RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher,
+  "#at_path",
+]) do
   let(:expectations) do
     Module.new do
       include RSpec::JsonMatchers::Expectations::Mixins::BuiltIn
@@ -27,10 +30,10 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher, "#at_pat
       }.to_json
     end
 
-    describe "the matcher works similar to passing a deeply nested Hash in expected, with or without #at_path" do
-      it { should be_json.with_content({a: {b: {c: 1}}}) }
-      it { should be_json.with_content({b: {c: 1}}).at_path("a") }
-      it { should be_json.with_content({c: 1}).at_path("a.b") }
+    describe "#at_path" do
+      it { should be_json.with_content(a: { b: { c: 1 } }) }
+      it { should be_json.with_content(b: { c: 1 }).at_path("a") }
+      it { should be_json.with_content(c: 1).at_path("a.b") }
       it { should be_json.with_content(1).at_path("a.b.c") }
     end
 
@@ -39,30 +42,51 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher, "#at_pat
       it { should_not be_json.with_content(Anything).at_path("a.b.c.d") }
     end
 
-    describe "the matcher fails the example when there is data is on the path, and using `should_not`" do
-      it { expect(be_json.with_content(Anything).at_path("a.b.c").does_not_match?(subject)).to eq false }
+    describe "when there is data is on the path, and using `should_not`" do
+      it "the matcher fails the example" do
+        expect(be_json.with_content(Anything).at_path("a.b.c").
+          does_not_match?(subject)).to eq(false)
+      end
     end
 
     describe "the matcher fails the example when path is invalid" do
-      it { expect(be_json.with_content(Anything).at_path(".").matches?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path(".a.").matches?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path("a..c").matches?(subject)).to eq false }
+      it do
+        expect(be_json.with_content(Anything).at_path(".").
+          matches?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path(".a.").
+          matches?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path("a..c").
+          matches?(subject)).to eq(false)
+      end
 
-      it { expect(be_json.with_content(Anything).at_path(".").does_not_match?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path(".a.").does_not_match?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path("a..c").does_not_match?(subject)).to eq false }
+      it do
+        expect(be_json.with_content(Anything).at_path(".").
+          does_not_match?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path(".a.").
+          does_not_match?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path("a..c").
+          does_not_match?(subject)).to eq(false)
+      end
     end
 
-    context "the matcher works the example when subject is an object with digit (as String) in keys" do
+    context "when subject is an object with digit (as String) in keys" do
       subject do
         {
-          '1' => {
-            '2' => 1,
+          "1" => {
+            "2" => 1,
           },
         }.to_json
       end
 
-      it { should be_json.with_content({'2' => 1}).at_path("1") }
+      it { should be_json.with_content("2" => 1).at_path("1") }
       it { should be_json.with_content(1).at_path("1.2") }
     end
   end
@@ -78,7 +102,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher, "#at_pat
       ].to_json
     end
 
-    describe "the matcher works similar to passing a deeply nested Hash in expected, with or without #at_path" do
+    describe "#at_path" do
       it { should be_json.with_content([[[1]]]) }
 
       it { should be_json.with_content([[1]]).at_path("0") }
@@ -91,23 +115,50 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher, "#at_pat
       it { should_not be_json.with_content(Anything).at_path("0.0.0.0") }
     end
 
-    describe "the matcher fails the example when there is data is on the path, and using `should_not`" do
-      it { expect(be_json.with_content(Anything).at_path("0.0.0").does_not_match?(subject)).to eq false }
+    describe "when there is data is on the path, and using `should_not`" do
+      it "the matcher fails the example" do
+        expect(be_json.with_content(Anything).at_path("0.0.0").
+          does_not_match?(subject)).to eq(false)
+      end
     end
 
     describe "the matcher fails the example when path is invalid" do
-      it { expect(be_json.with_content(Anything).at_path(".").matches?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path(".0.").matches?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path("0..0").matches?(subject)).to eq false }
+      it do
+        expect(be_json.with_content(Anything).at_path(".").
+          matches?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path(".0.").
+          matches?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path("0..0").
+          matches?(subject)).to eq(false)
+      end
 
-      it { expect(be_json.with_content(Anything).at_path(".").does_not_match?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path(".0.").does_not_match?(subject)).to eq false }
-      it { expect(be_json.with_content(Anything).at_path("0..0").does_not_match?(subject)).to eq false }
+      it do
+        expect(be_json.with_content(Anything).at_path(".").
+          does_not_match?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path(".0.").
+          does_not_match?(subject)).to eq(false)
+      end
+      it do
+        expect(be_json.with_content(Anything).at_path("0..0").
+          does_not_match?(subject)).to eq(false)
+      end
     end
 
-    describe "the matcher considers non-digit path as valid since subject is being checked later" do
-      it { expect(be_json.with_content("whatever").at_path("a").matches?(subject)).to eq false }
-      it { expect(be_json.with_content("whatever").at_path("a").does_not_match?(subject)).to eq true }
+    describe "when path is invalid due to containing non-digit" do
+      specify "the matcher fails the example for `should`" do
+        expect(be_json.with_content("whatever").at_path("a").
+          matches?(subject)).to eq(false)
+      end
+      specify "the matcher passes the example for `should_not`" do
+        expect(be_json.with_content("whatever").at_path("a").
+          does_not_match?(subject)).to eq(true)
+      end
     end
   end
 end

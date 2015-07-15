@@ -14,14 +14,15 @@ module RSpec
       # The subclasses only need to implement the behaviour of matching keys
       # when both expected & actual are same type of collection
       class AbstractComparer
-        attr_reader *[
+        attr_reader(*[
           :actual,
           :expected,
           :reasons,
           :value_matching_proc,
-        ]
+        ])
 
-        # Creates a comparer that actually use the {value_matching_proc} for matching {#actual} and {#expected}
+        # Creates a comparer that actually use the {value_matching_proc}
+        # for matching {#actual} and {#expected}
         # This class is respossible to aggregating
         # the matching result for each element of {#expected},
         # and compare the keys/indices as well
@@ -31,7 +32,8 @@ module RSpec
         # @param reasons [Array<String>]
         #   failure reasons, mostly the path parts
         # @param value_matching_proc [Proc]
-        #   the proc that actually compares the expected & actual and returns a boolean
+        #   the proc that actually compares
+        #   the expected & actual and returns a boolean
         def initialize(actual, expected, reasons, value_matching_proc)
           @actual   = actual
           @expected = expected
@@ -43,9 +45,7 @@ module RSpec
         # @return [Boolean]
         #   `true` if #actual & #expected are the same
         def compare
-          if has_matched_value?
-            return ComparisonResult.new(true, reasons)
-          end
+          return ComparisonResult.new(true, reasons) if has_matched_value?
 
           has_matched_collection?
         end
@@ -74,15 +74,13 @@ module RSpec
 
         # @note with side effect on `#reasons`
         def has_matched_keys?
-          raise NotImplementedError
+          fail NotImplementedError
         end
 
         # @note with side effect on `#reasons`
         def has_matched_values?
-          comparison_result = {
-            Array => HasMatchedArrayValues,
-            Hash  => HasMatchedHashValues,
-          }.fetch(expected.class).
+          comparison_result = EXPECTED_VALUE_CLASS_TO_EXPECTATION_MAPPING.
+            fetch(expected.class).
             new(expected, actual, reasons, value_matching_proc, self.class).
             comparison_result
 
@@ -91,31 +89,49 @@ module RSpec
           end
         end
 
+        def actual_keys
+          @actual_keys ||= Utils::CollectionKeysExtractor.extract(actual)
+        end
+
+        def expected_keys
+          @expected_keys ||= Utils::CollectionKeysExtractor.extract(expected)
+        end
+
+        # Represents an "expectation" for matching all elements
+        # in {#actual} & {#expected}
         class HasMatchedValues
           extend AbstractClass
 
           private
-          attr_reader *[
+
+          attr_reader(*[
             :actual,
             :expected,
             :reasons,
             :value_matching_proc,
 
             :comparer_class,
-          ]
+          ])
+
           public
 
-          # Create a "matching" operation object that can return a {Comparers::ComparisonResult}
+          # Create a "matching" operation object
+          # that can return a {Comparers::ComparisonResult}
           #
-          # @param expected [Object] the expected "thing", should be an {Enumerable}
-          # @param actual [Object] the actual "thing", should be an {Enumerable}
+          # @param expected [Object]
+          #   the expected "thing", should be an {Enumerable}
+          # @param actual [Object]
+          #   the actual "thing", should be an {Enumerable}
           # @param reasons [Array<String>]
           #   failure reasons, mostly the path parts
           # @param value_matching_proc [Proc]
-          #   the proc that actually compares the expected & actual and returns a boolean
+          #   the proc that actually compares
+          #   the expected & actual and returns a boolean
           # @param comparer_class [Class<AbstractComparer>]
           #   the class that should be used recursively
-          def initialize(expected, actual, reasons, value_matching_proc, comparer_class)
+          def initialize(
+            expected, actual,
+              reasons, value_matching_proc, comparer_class)
             @actual   = actual
             @expected = expected
             @reasons  = reasons
@@ -127,7 +143,27 @@ module RSpec
 
           def comparison_result
             each_element_enumerator.each do |element|
-              comparison_result = has_matched_value_class.new(
+              result = comparison_result_for_element(element)
+
+              return result unless result.matched?
+            end
+
+            Comparers::ComparisonResult.new(true, reasons)
+          end
+
+          def each_element_enumerator
+            fail NotImplementedError
+          end
+
+          def has_matched_value_class
+            fail NotImplementedError
+          end
+
+          private
+
+          def comparison_result_for_element(element)
+            has_matched_value_class.
+              new(
                 element,
                 expected,
                 actual,
@@ -135,26 +171,16 @@ module RSpec
                 value_matching_proc,
                 comparer_class,
               ).comparison_result
-
-              return comparison_result unless comparison_result.matched?
-            end
-
-            Comparers::ComparisonResult.new(true, reasons)
           end
 
-          def each_element_enumerator
-            raise NotImplementedError
-          end
-
-          def has_matched_value_class
-            raise NotImplementedError
-          end
-
+          # Represents an "expectation" for matching one element
+          # in {#actual} & {#expected}
           class HasMatchedValue
             extend AbstractClass
 
             private
-            attr_reader *[
+
+            attr_reader(*[
               :element,
 
               :actual,
@@ -164,15 +190,21 @@ module RSpec
               :value_matching_proc,
 
               :comparer_class,
-            ]
+            ])
+
             public
 
-            # Create a "matching" operation object that can return a {Comparers::ComparisonResult}
+            # Create a "matching" operation object
+            # that can return a {Comparers::ComparisonResult}
             # Unlike {HasMatchedValues}, this is for an element of `expected`
             #
-            # @param element [Integer, String, Symbol] a index/key from expected (not value)
+            # @param element [Integer, String, Symbol]
+            #   a index/key from expected (not value)
             # @param (see HasMatchedValues#initialize)
-            def initialize(element, expected, actual, reasons, value_matching_proc, comparer_class)
+            def initialize(
+              element,
+                expected, actual,
+                reasons, value_matching_proc, comparer_class)
               @element  = element
               @actual   = actual
               @expected = expected
@@ -206,22 +238,25 @@ module RSpec
             end
 
             def actual_contain_element?
-              raise NotImplementedError
+              fail NotImplementedError
             end
 
             def actual_for_element
-              raise NotImplementedError
+              fail NotImplementedError
             end
+
             def expected_for_element
-              raise NotImplementedError
+              fail NotImplementedError
             end
 
             def reason
-              raise NotImplementedError
+              fail NotImplementedError
             end
           end
         end
 
+        # (see HasMatchedValues)
+        # {#expected} should be {Array}
         class HasMatchedArrayValues < HasMatchedValues
           def each_element_enumerator
             expected.each_index
@@ -231,9 +266,13 @@ module RSpec
             HasMatchedArrayValue
           end
 
+          # (see HasMatchedValues::HasMatchedValue)
+          # {#expected} should be {Array}
           class HasMatchedArrayValue < HasMatchedValues::HasMatchedValue
             private
+
             alias_method :index, :element
+
             public
 
             def actual_contain_element?
@@ -243,6 +282,7 @@ module RSpec
             def actual_for_element
               actual[index]
             end
+
             def expected_for_element
               expected[index]
             end
@@ -253,6 +293,8 @@ module RSpec
           end
         end
 
+        # (see HasMatchedValues)
+        # {#expected} should be {Hash}
         class HasMatchedHashValues < HasMatchedValues
           def each_element_enumerator
             expected.each_key
@@ -262,9 +304,13 @@ module RSpec
             HasMatchedHashValue
           end
 
+          # (see HasMatchedValues::HasMatchedValue)
+          # {#expected} should be {Array}
           class HasMatchedHashValue < HasMatchedValues::HasMatchedValue
             private
+
             alias_method :key, :element
+
             public
 
             def actual_contain_element?
@@ -274,6 +320,7 @@ module RSpec
             def actual_for_element
               actual[key.to_s]
             end
+
             def expected_for_element
               expected[key]
             end
@@ -283,6 +330,12 @@ module RSpec
             end
           end
         end
+
+        EXPECTED_VALUE_CLASS_TO_EXPECTATION_MAPPING = {
+          Array => HasMatchedArrayValues,
+          Hash  => HasMatchedHashValues,
+        }.freeze
+        private_constant :EXPECTED_VALUE_CLASS_TO_EXPECTATION_MAPPING
       end
     end
   end

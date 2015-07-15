@@ -10,5 +10,5 @@ if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
     sh "appraisal install && rake appraisal spec"
   end
 else
-  task :default => :spec
+  task default: :spec
 end

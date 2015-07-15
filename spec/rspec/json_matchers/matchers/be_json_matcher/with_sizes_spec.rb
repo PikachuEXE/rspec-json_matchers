@@ -142,7 +142,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
                 a: [
                   actual.fetch(:a),
                   actual.fetch(:a),
-                ].flat_map{|i| i},
+                ].flat_map { |i| i },
               )
             end
 
@@ -231,7 +231,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
                 a: [
                   actual.fetch(:a).fetch(:b),
                   actual.fetch(:a).fetch(:b),
-                ].flat_map{|i| i},
+                ].flat_map { |i| i },
               )
             end
 
@@ -254,7 +254,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
             before do
               # A hash instead of array
               actual.merge!(
-                a: {b: 1},
+                a: { b: 1 },
               )
             end
 
@@ -339,7 +339,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
             [
               [
                 1,
-              ]
+              ],
             ]
           end
           # Cannot find better alternative
@@ -357,7 +357,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
               actual[0] = [
                 actual.at(0),
                 actual.at(0),
-              ].flat_map{|i| i}
+              ].flat_map { |i| i }
             end
 
             it "does NOT match" do
@@ -376,7 +376,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
           context "and ONLY deepest key size data type is unexpected" do
             before do
               # A hash instead of array
-              actual[0] = {b: 1}
+              actual[0] = { b: 1 }
             end
 
             it "does NOT match" do
@@ -393,13 +393,13 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
               [
                 [
                   1,
-                ]
-              ]
+                ],
+              ],
             ]
           end
           # Cannot find better alternative
           # But we only put simple values inside `actual`
-          let!(:expected) { actual.map{|lv2_ary| lv2_ary.map(&:size)} }
+          let!(:expected) { actual.map { |lv2_ary| lv2_ary.map(&:size) } }
 
           context "and subject is exactly matched with expected" do
             it "DOES match" do
@@ -412,7 +412,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
               actual[0][0] = [
                 actual.at(0).at(0),
                 actual.at(0).at(0),
-              ].flat_map{|i| i}
+              ].flat_map { |i| i }
             end
 
             it "does NOT match" do
@@ -431,7 +431,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher do
           context "and ONLY deepest key size data type is unexpected" do
             before do
               # A hash instead of array
-              actual[0][0] = {b: 1}
+              actual[0][0] = { b: 1 }
             end
 
             it "does NOT match" do

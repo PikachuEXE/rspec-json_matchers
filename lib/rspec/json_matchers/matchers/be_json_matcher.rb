@@ -2,6 +2,8 @@ require "json"
 
 module RSpec
   module JsonMatchers
+    # Mixin Module to be included into RSpec
+    # Other files will define the same module and add methods to this module
     module Matchers
       # @api
       #
@@ -13,6 +15,8 @@ module RSpec
       end
 
       # @api private
+      #
+      # The implementation for {Matchers#be_json}
       class BeJsonMatcher
         attr_reader :actual
 
@@ -61,32 +65,38 @@ module RSpec
           "be a valid JSON string"
         end
 
-        # Failure message displayed when a positive example failed (e.g. using `should`)
+        # Failure message displayed when a positive example failed
+        # (e.g. using `should`)
         #
         # @return [String]
         def failure_message_for_positive
           "expected value to be parsed as JSON, but failed"
         end
-        alias :failure_message :failure_message_for_positive
+        alias_method :failure_message,
+          :failure_message_for_positive
 
-        # Failure message displayed when a negative example failed (e.g. using `should_not`)
+        # Failure message displayed when a negative example failed
+        # (e.g. using `should_not`)
         #
         # @return [String]
         def failure_message_for_negative
           "expected value not to be parsed as JSON, but succeeded"
         end
-        alias :failure_message_when_negated :failure_message_for_negative
+        alias_method :failure_message_when_negated,
+          :failure_message_for_negative
 
         private
 
         def has_parser_error?
-          !!@has_parser_error
+          @has_parser_error
         end
       end
     end
   end
 end
 
-# These files are required since the classes are only required on runtime, not load time
+# These files are required here
+# since the classes are only required
+# on runtime but not load time
 require_relative "be_json_with_content_matcher"
 require_relative "be_json_with_sizes_matcher"

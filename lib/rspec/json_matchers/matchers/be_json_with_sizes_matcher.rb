@@ -13,7 +13,10 @@ module RSpec
         private
 
         def value_matching_proc
-          -> (expected, actual) { Expectations::Private::ArrayWithSize[expected].expect?(actual) }
+          lambda do |expected, actual|
+            Expectations::Private::ArrayWithSize[expected].
+              expect?(actual)
+          end
         end
       end
     end

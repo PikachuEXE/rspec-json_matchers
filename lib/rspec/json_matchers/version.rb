@@ -1,4 +1,6 @@
 module RSpec
+  # The actual namespace for this gem
+  # All other classes/modules are defined within this module
   module JsonMatchers
     # The version of the gem
     # Used for generating the value in gemspec file

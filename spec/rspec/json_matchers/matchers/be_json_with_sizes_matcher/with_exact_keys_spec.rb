@@ -142,7 +142,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
                 a: [
                   actual.fetch(:a),
                   actual.fetch(:a),
-                ].flat_map{|i| i},
+                ].flat_map { |i| i },
               )
             end
 
@@ -231,7 +231,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
                 a: [
                   actual.fetch(:a).fetch(:b),
                   actual.fetch(:a).fetch(:b),
-                ].flat_map{|i| i},
+                ].flat_map { |i| i },
               )
             end
 
@@ -254,7 +254,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
             before do
               # A hash instead of array
               actual.merge!(
-                a: {b: 1},
+                a: { b: 1 },
               )
             end
 
@@ -339,7 +339,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
             [
               [
                 1,
-              ]
+              ],
             ]
           end
           # Cannot find better alternative
@@ -357,7 +357,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
               actual[0] = [
                 actual.at(0),
                 actual.at(0),
-              ].flat_map{|i| i}
+              ].flat_map { |i| i }
             end
 
             it "does NOT match" do
@@ -376,7 +376,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
           context "and ONLY deepest key size data type is unexpected" do
             before do
               # A hash instead of array
-              actual[0] = {b: 1}
+              actual[0] = { b: 1 }
             end
 
             it "does NOT match" do
@@ -393,13 +393,13 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
               [
                 [
                   1,
-                ]
-              ]
+                ],
+              ],
             ]
           end
           # Cannot find better alternative
           # But we only put simple values inside `actual`
-          let!(:expected) { actual.map{|lv2_ary| lv2_ary.map(&:size)} }
+          let!(:expected) { actual.map { |lv2_ary| lv2_ary.map(&:size) } }
 
           context "and subject is exactly matched with expected" do
             it "DOES match" do
@@ -412,7 +412,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
               actual[0][0] = [
                 actual.at(0).at(0),
                 actual.at(0).at(0),
-              ].flat_map{|i| i}
+              ].flat_map { |i| i }
             end
 
             it "does NOT match" do
@@ -431,7 +431,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
           context "and ONLY deepest key size data type is unexpected" do
             before do
               # A hash instead of array
-              actual[0][0] = {b: 1}
+              actual[0][0] = { b: 1 }
             end
 
             it "does NOT match" do
@@ -448,7 +448,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
       subject { "" }
 
       it "does NOT match" do
-        should_not be_json.with_sizes({}).with_exact_keys.at_path("part1.part2")
+        should_not be_json.with_sizes({}).
+          with_exact_keys.at_path("part1.part2")
       end
     end
 
@@ -466,34 +467,40 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
 
       context "and expected size does NOT match" do
         it "does NOT match" do
-          should_not be_json.with_sizes(2).with_exact_keys.at_path("part1.part2")
+          should_not be_json.with_sizes(2).
+            with_exact_keys.at_path("part1.part2")
         end
       end
       context "and expected size DOES match" do
         it "DOES match" do
-          should be_json.with_sizes(1).with_exact_keys.at_path("part1.part2")
+          should be_json.with_sizes(1).
+            with_exact_keys.at_path("part1.part2")
         end
       end
 
       context "and expected path does NOT match" do
         context "due to first part mismatch" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("part1b.part2")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("part1b.part2")
           end
         end
         context "due to last part mismatch" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("part1.part2b")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("part1.part2b")
           end
         end
         context "due to level too deep" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("part1.part2.part3")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("part1.part2.part3")
           end
         end
         context "due to level too shallow" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("part1")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("part1")
           end
         end
       end
@@ -512,34 +519,40 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
 
       context "and expected size does NOT match" do
         it "does NOT match" do
-          should_not be_json.with_sizes(2).with_exact_keys.at_path("0.0")
+          should_not be_json.with_sizes(2).
+            with_exact_keys.at_path("0.0")
         end
       end
       context "and expected size DOES match" do
         it "DOES match" do
-          should be_json.with_sizes(1).with_exact_keys.at_path("0.0")
+          should be_json.with_sizes(1).
+            with_exact_keys.at_path("0.0")
         end
       end
 
       context "and expected path does NOT match" do
         context "due to first part mismatch" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("1.0")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("1.0")
           end
         end
         context "due to last part mismatch" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("0.1")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("0.1")
           end
         end
         context "due to level too deep" do
           it "does NOT match" do
-            should_not be_json.with_sizes(1).with_exact_keys.at_path("0.0.0")
+            should_not be_json.with_sizes(1).
+              with_exact_keys.at_path("0.0.0")
           end
         end
         context "due to level too shallow" do
           it "DOES match" do
-            should be_json.with_sizes(1).with_exact_keys.at_path("0")
+            should be_json.with_sizes(1).
+              with_exact_keys.at_path("0")
           end
         end
       end
@@ -547,17 +560,20 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
       context "and path is invalid" do
         context "like containing out of bound index" do
           it "does NOT match" do
-            should_not be_json.with_sizes({}).with_exact_keys.at_path("#{actual.size + 1}.0")
+            should_not be_json.with_sizes({}).
+              with_exact_keys.at_path("#{actual.size + 1}.0")
           end
         end
         context "like containing negative number in path" do
           it "does NOT match" do
-            should_not be_json.with_sizes({}).with_exact_keys.at_path("-1.0")
+            should_not be_json.with_sizes({}).
+              with_exact_keys.at_path("-1.0")
           end
         end
         context "like containing non digit in path" do
           it "does NOT match" do
-            should_not be_json.with_sizes({}).with_exact_keys.at_path("0.a")
+            should_not be_json.with_sizes({}).
+              with_exact_keys.at_path("0.a")
           end
         end
       end
@@ -572,7 +588,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
             [
               [
                 1,
-              ]
+              ],
             ],
           ]
         end
@@ -582,7 +598,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
 
         context "and subject is exactly matched with expected size" do
           it "DOES match" do
-            should be_json.with_sizes(expected).with_exact_keys.at_path("0.0")
+            should be_json.with_sizes(expected).
+              with_exact_keys.at_path("0.0")
           end
         end
 
@@ -592,7 +609,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
           end
 
           it "does NOT match" do
-            should_not be_json.with_sizes(expected).with_exact_keys.at_path("0.0")
+            should_not be_json.with_sizes(expected).
+              with_exact_keys.at_path("0.0")
           end
         end
 
@@ -630,14 +648,16 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithSizesMatcher do
             let(:range) { (2..3) }
 
             it "does NOT match" do
-              should_not be_json.with_sizes(expected).with_exact_keys.at_path("0.0")
+              should_not be_json.with_sizes(expected).
+                with_exact_keys.at_path("0.0")
             end
           end
           context "actual value IS covered by the range" do
             let(:range) { (1..3) }
 
             it "DOES match" do
-              should be_json.with_sizes(expected).with_exact_keys.at_path("0.0")
+              should be_json.with_sizes(expected).
+                with_exact_keys.at_path("0.0")
             end
           end
         end
