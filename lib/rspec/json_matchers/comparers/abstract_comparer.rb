@@ -1,4 +1,5 @@
 require "abstract_class"
+require "forwardable"
 require "set"
 require_relative "../expectation"
 require_relative "comparison_result"
@@ -27,8 +28,10 @@ module RSpec
         # the matching result for each element of {#expected},
         # and compare the keys/indices as well
         #
-        # @param actual [Object] the actual value
-        # @param expected [Object] the expected value
+        # @param actual [Object]
+        #   the actual "thing", should be an {Enumerable}
+        # @param expected [Object]
+        #   the expected "thing", should be an {Enumerable}
         # @param reasons [Array<String>]
         #   failure reasons, mostly the path parts
         # @param value_matching_proc [Proc]
@@ -81,7 +84,7 @@ module RSpec
         def has_matched_values?
           comparison_result = EXPECTED_VALUE_CLASS_TO_EXPECTATION_MAPPING.
             fetch(expected.class).
-            new(expected, actual, reasons, value_matching_proc, self.class).
+            new(self).
             comparison_result
 
           comparison_result.matched?.tap do |matched|
@@ -101,44 +104,17 @@ module RSpec
         # in {#actual} & {#expected}
         class HasMatchedValues
           extend AbstractClass
-
-          private
-
-          attr_reader(*[
-            :actual,
-            :expected,
-            :reasons,
-            :value_matching_proc,
-
-            :comparer_class,
-          ])
+          extend Forwardable
 
           public
 
           # Create a "matching" operation object
           # that can return a {Comparers::ComparisonResult}
           #
-          # @param expected [Object]
-          #   the expected "thing", should be an {Enumerable}
-          # @param actual [Object]
-          #   the actual "thing", should be an {Enumerable}
-          # @param reasons [Array<String>]
-          #   failure reasons, mostly the path parts
-          # @param value_matching_proc [Proc]
-          #   the proc that actually compares
-          #   the expected & actual and returns a boolean
-          # @param comparer_class [Class<AbstractComparer>]
-          #   the class that should be used recursively
-          def initialize(
-            expected, actual,
-              reasons, value_matching_proc, comparer_class)
-            @actual   = actual
-            @expected = expected
-            @reasons  = reasons
-
-            @value_matching_proc  = value_matching_proc
-
-            @comparer_class       = comparer_class
+          # @param comparer [AbstractComparer]
+          #   the comparer that creates this object, for fetching values
+          def initialize(comparer)
+            @comparer = comparer
           end
 
           def comparison_result
@@ -161,15 +137,25 @@ module RSpec
 
           private
 
+          def_delegators(*[
+            :comparer,
+            :expected,
+            :reasons,
+          ])
+
+          attr_reader(*[
+            :comparer,
+          ])
+
+          def comparer_class
+            comparer.class
+          end
+
           def comparison_result_for_element(element)
             has_matched_value_class.
               new(
                 element,
-                expected,
-                actual,
-                reasons,
-                value_matching_proc,
-                comparer_class,
+                comparer,
               ).comparison_result
           end
 
@@ -177,20 +163,7 @@ module RSpec
           # in {#actual} & {#expected}
           class HasMatchedValue
             extend AbstractClass
-
-            private
-
-            attr_reader(*[
-              :element,
-
-              :actual,
-              :expected,
-              :reasons,
-
-              :value_matching_proc,
-
-              :comparer_class,
-            ])
+            extend Forwardable
 
             public
 
@@ -201,18 +174,9 @@ module RSpec
             # @param element [Integer, String, Symbol]
             #   a index/key from expected (not value)
             # @param (see HasMatchedValues#initialize)
-            def initialize(
-              element,
-                expected, actual,
-                reasons, value_matching_proc, comparer_class)
+            def initialize(element, comparer)
               @element  = element
-              @actual   = actual
-              @expected = expected
-              @reasons  = reasons
-
-              @value_matching_proc  = value_matching_proc
-
-              @comparer_class       = comparer_class
+              @comparer = comparer
             end
 
             def comparison_result
@@ -225,6 +189,23 @@ module RSpec
             end
 
             private
+
+            attr_reader(*[
+              :element,
+              :comparer,
+            ])
+
+            def_delegators(*[
+              :comparer,
+              :expected,
+              :actual,
+              :reasons,
+              :value_matching_proc,
+            ])
+
+            def comparer_class
+              comparer.class
+            end
 
             def result
               @result ||= comparer_class.

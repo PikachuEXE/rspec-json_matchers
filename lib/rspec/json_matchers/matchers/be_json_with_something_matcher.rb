@@ -17,11 +17,7 @@ module RSpec
       class BeJsonWithSomethingMatcher < BeJsonMatcher
         extend AbstractClass
 
-        attr_reader(*[
-          :expected,
-          :path,
-          :with_exact_keys,
-        ])
+        attr_reader(*[:expected, :path, :with_exact_keys])
         alias_method :with_exact_keys?, :with_exact_keys
 
         def initialize(expected)
@@ -36,10 +32,6 @@ module RSpec
 
         def does_not_match?(*args)
           !matches?(*args) && has_valid_path?
-        end
-
-        def description
-          super
         end
 
         # Override {BeJsonMatcher#actual}
@@ -98,22 +90,23 @@ module RSpec
         # Overrides {BeJsonMatcher#failure_message_for_positive}
         def failure_message_for_positive
           return super if has_parser_error?
-          return invalid_path_message unless has_valid_path?
-          return path_error_message if has_path_error?
-
-          inspection_messages(true)
+          failure_message_for(true)
         end
 
         # Overrides {BeJsonMatcher#failure_message_for_negative}
         def failure_message_for_negative
           return super if has_parser_error?
-          return invalid_path_message unless has_valid_path?
-          return path_error_message if has_path_error?
-
-          inspection_messages(false)
+          failure_message_for(false)
         end
 
         private
+
+        def failure_message_for(should_match)
+          return invalid_path_message unless has_valid_path?
+          return path_error_message if has_path_error?
+
+          inspection_messages(should_match)
+        end
 
         # @return [Bool] Whether `expected` & `parsed` are "equal"
         def expected_and_actual_matched?
@@ -133,20 +126,24 @@ module RSpec
         end
 
         def inspection_messages(should_match)
-          prefix = should_match ? nil : "not"
-
-          messages = [
-            ["expected", prefix, "to match:"].compact.map(&:strip).join(" "),
+          [
+            ["expected", inspection_messages_prefix(should_match), "to match:"].
+              compact.map(&:strip).join(" "),
             expected.awesome_inspect(indent: -2),
             "",
             "actual:",
             actual.awesome_inspect(indent: -2),
             "",
-          ]
-          unless reasons.empty?
-            messages.push "reason/path: #{reasons.reverse.join('.')}"
-          end
-          messages.join("\n")
+            inspection_message_for_reason,
+          ].join("\n")
+        end
+
+        def inspection_messages_prefix(should_match)
+          should_match ? nil : "not"
+        end
+
+        def inspection_message_for_reason
+          reasons.any? ? "reason/path: #{reasons.reverse.join('.')}" : nil
         end
 
         def original_actual

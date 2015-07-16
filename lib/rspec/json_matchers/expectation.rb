@@ -38,28 +38,7 @@ module RSpec
         #
         # @return [Expectation]
         def build(value)
-          return value if value.is_a?(self)
-
-          if value.is_a?(Regexp)
-            return Expectations::Private::MatchingRegexp[value]
-          end
-
-          return Expectations::Private::InRange[value] if value.is_a?(Range)
-
-          if value.respond_to?(:call)
-            return Expectations::Private::SatisfyingCallable[value]
-          end
-
-          if value.is_a?(Class)
-            # Subclass
-            # See http://ruby-doc.org/core-2.2.2/Module.html#method-i-3C
-            if value < Expectations::Core::SingletonExpectation
-              return value::INSTANCE
-            end
-            return Expectations::Private::KindOf[value]
-          end
-
-          Expectations::Private::Eq[value]
+          Builder.new(value).build
         end
         # @api private
         #
@@ -69,6 +48,63 @@ module RSpec
         # @see .build
         def build_many(values)
           values.flat_map { |v| build(v) }
+        end
+      end
+
+      # @api private
+      #
+      # Represents a builder that
+      # returns a {Expectation} object from an input object
+      class Builder
+        # @param object [Object]
+        #   any object that should be "built"
+        #   into a {Expectation} object
+        def initialize(object)
+          @object = object
+        end
+
+        # @return [Expectation]
+        def build
+          return object if object.is_a?(Expectation)
+          return expectation_by_class unless expectation_by_class.nil?
+          return expectation_for_call if object.respond_to?(:call)
+          return expectation_by_ancestors if object.is_a?(Class)
+
+          Expectations::Private::Eq[object]
+        end
+
+        private
+
+        OBJECT_CLASS_TO_EXPECTATION_HASH = {
+          Regexp => -> (obj) { Expectations::Private::MatchingRegexp[obj] },
+          Range => -> (obj) { Expectations::Private::InRange[obj] },
+        }.freeze
+        private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
+
+        attr_reader(*[:object])
+
+        def expectation_by_class
+          if instance_variable_defined?(:@expectation_by_object_class)
+            return @expectation_by_object_class
+          end
+
+          proc = OBJECT_CLASS_TO_EXPECTATION_HASH[object.class]
+          return nil if proc.nil?
+
+          proc.call(object)
+        end
+
+        def expectation_by_ancestors
+          # Subclass
+          # See http://ruby-doc.org/core-2.2.2/Module.html#method-i-3C
+          if object < Expectations::Core::SingletonExpectation
+            return object::INSTANCE
+          end
+          Expectations::Private::KindOf[object]
+        end
+
+        def expectation_for_call
+          Expectations::Private::SatisfyingCallable[object]
         end
       end
     end

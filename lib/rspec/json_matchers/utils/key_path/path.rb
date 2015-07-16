@@ -1,5 +1,4 @@
-require_relative "extraction_result"
-require_relative "extractor"
+require_relative "extraction"
 
 module RSpec
   module JsonMatchers
@@ -76,11 +75,11 @@ module RSpec
           # @param object [Object]
           #   The "source object" to extract our "target object" from
           #
-          # @return [ExtractionResult] The result of object extraction
+          # @return [Extraction::Result] The result of object extraction
           def extract(object)
-            return ExtractionResult.new(object, true) if empty?
-            return ExtractionResult.new(object, false) if invalid?
-            Extractor.new(object, self).extract
+            return Extraction::Result.new(object, true) if empty?
+            return Extraction::Result.new(object, false) if invalid?
+            Extraction.new(object, self).extract
           end
 
           protected
