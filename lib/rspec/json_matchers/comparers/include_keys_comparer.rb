@@ -18,8 +18,7 @@ module RSpec
         end
 
         def diff_keys
-          (actual_keys - expected_keys) +
-            (expected_keys - actual_keys)
+          expected_keys - actual_keys
         end
       end
     end
