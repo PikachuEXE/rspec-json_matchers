@@ -17,11 +17,15 @@ module RSpec
     class Expectation
       extend AbstractClass
 
+      # Determine the value passed in
+      # is "expected" by self or not
+      # And return the result
+      #
       # @abstract
       #   This method MUST be overridden
       #   to allow this gem to determine the test result
       #
-      # @param value [Object] actual value to be evaluated
+      # @param _value [Object] actual value to be evaluated
       #
       # @return [Bool] Whether the `value` is expected
       def expect?(_value)
@@ -56,6 +60,9 @@ module RSpec
       # Represents a builder that
       # returns a {Expectation} object from an input object
       class Builder
+        # Creates a bullder with an object that
+        # might or might not be a {Expectation} object
+        #
         # @param object [Object]
         #   any object that should be "built"
         #   into a {Expectation} object
@@ -63,7 +70,13 @@ module RSpec
           @object = object
         end
 
-        # @return [Expectation]
+        # Create and return a {Expectation} object
+        # according to one of the following
+        #   - the class of object
+        #   - does the object respond to `#call`
+        #   - the ancestors of the object (when it's a class)
+        #
+        # @return [Expectation] a {Expectation} object
         def build
           return object if object.is_a?(Expectation)
           return expectation_by_class unless expectation_by_class.nil?
