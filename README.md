@@ -18,6 +18,8 @@ This gem provides a collection of RSpec matchers for testing JSON data.
 It aims to make JSON testing flexible & easier, especially for testing multiple properties.
 It does not and will not have anything related to JSON Schema.
 
+You can read [the story of this project](https://github.com/PikachuEXE/rspec-json_matchers/blob/master/doc/Story.md) if you have time.
+
 ## Installation
 
 Add this line to your application's Gemfile:
