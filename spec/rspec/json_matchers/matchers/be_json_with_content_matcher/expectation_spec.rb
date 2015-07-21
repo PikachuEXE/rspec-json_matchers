@@ -874,6 +874,11 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
             actual: 4,
             should_match: false,
           },
+          {
+            type: "value matching 0 expectation and null",
+            actual: nil,
+            should_match: false,
+          },
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -914,6 +919,58 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "value matching ALL expectations",
             actual: 3,
+            should_match: true,
+          },
+        ].each do |hash|
+          context "and actual is a #{hash.fetch(:type)}" do
+            let(:actual_value) { hash.fetch(:actual) }
+
+            if hash.fetch(:should_match)
+              it "DOES match" do
+                should be_json.with_content(expected)
+              end
+            else
+              it "does NOT match" do
+                should_not be_json.with_content(expected)
+              end
+            end
+          end
+        end
+      end
+
+      describe "Expectations::Mixins::BuiltIn::NullableOf" do
+        let(:expected_value) do
+          RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::NullableOf[
+            1,
+            2,
+            3,
+          ]
+        end
+
+        [
+          {
+            type: "value matching >= 1 expectations",
+            actual: 1,
+            should_match: true,
+          },
+          {
+            type: "value matching >= 1 expectations",
+            actual: 2,
+            should_match: true,
+          },
+          {
+            type: "value matching >= 1 expectations",
+            actual: 3,
+            should_match: true,
+          },
+          {
+            type: "value matching 0 expectation",
+            actual: 4,
+            should_match: false,
+          },
+          {
+            type: "value matching 0 expectation and null",
+            actual: nil,
             should_match: true,
           },
         ].each do |hash|

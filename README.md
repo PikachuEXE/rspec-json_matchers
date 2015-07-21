@@ -404,6 +404,30 @@ specify do
 end # => pass
 
 
+# `NullableOf` is an expectation that works like `AnyOf`
+# Except it always passes when the subject is `nil`
+specify do
+  expect({a: 1}.to_json).to be_json.
+    with_content(a: expectations::NullableOf[1])
+end # => pass
+specify do
+  expect({a: 1}.to_json).to be_json.
+    with_content(a: expectations::NullableOf[0, 1, 2])
+end # => pass
+specify do
+  expect({a: 1}.to_json).to be_json.
+    with_content(a: expectations::NullableOf[false, expectations::Anything, false])
+end # => pass
+specify do
+  expect({a: 1}.to_json).to be_json.
+    with_content(a: expectations::NullableOf[false, false, false])
+end # => fail
+specify do
+  expect({a: nil}.to_json).to be_json.
+    with_content(a: expectations::NullableOf[false, false, false])
+end # => fail
+
+
 # `AnyOf` is an expectation that passes when **any** of "expectations" passed in
 # "expects" the subject
 # It will convert non `Expectation` objects into `Expectation` objects,

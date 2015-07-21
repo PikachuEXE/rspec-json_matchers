@@ -129,6 +129,15 @@ module RSpec
             end
           end
 
+          # (see AnyOf)
+          # It will pass regardless of {#expectations}
+          # if the value is `nil`
+          class NullableOf < AnyOf
+            def expect?(value)
+              value.nil? || super
+            end
+          end
+
           # Takes any number of {Integer} or {Range} (if not already)
           # Validates `value` to be {Array}
           # And the size matches any value passed in
