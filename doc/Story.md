@@ -123,7 +123,6 @@ In the near future:
 - Add `CONTRIBUTING.md` if appropriate
 
 There are several features that might be considered to be implemented in the future:
-- Built-in "expectation" for "type or null"
 - Built-in "expectation" for "date"
 - Path matching feature in [`airborne`](https://github.com/brooklynDev/airborne)
 - `be_json.with_types` which only accepts classes (only? not sure)
