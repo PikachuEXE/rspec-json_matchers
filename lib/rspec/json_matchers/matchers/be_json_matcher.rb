@@ -69,21 +69,17 @@ module RSpec
         # (e.g. using `should`)
         #
         # @return [String]
-        def failure_message_for_positive
+        def failure_message
           "expected value to be parsed as JSON, but failed"
         end
-        alias_method :failure_message,
-          :failure_message_for_positive
 
         # Failure message displayed when a negative example failed
         # (e.g. using `should_not`)
         #
         # @return [String]
-        def failure_message_for_negative
+        def failure_message_when_negated
           "expected value not to be parsed as JSON, but succeeded"
         end
-        alias_method :failure_message_when_negated,
-          :failure_message_for_negative
 
         private
 
