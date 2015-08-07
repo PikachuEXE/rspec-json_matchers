@@ -476,6 +476,16 @@ specify do
 end # => fail
 ```
 
+#### Custom/Complex Expectations NOT included on purpose
+
+##### Date
+In [`airborne`](https://github.com/brooklynDev/airborne) you can validate the value as a "date" (and "time").  
+However "date/time" is not part of the JSON specification.  
+Some people use a string with a format specified in ISO to represent a time, but a [Unix time](https://en.wikipedia.org/wiki/Unix_time).  
+So this gem does not try to be "smart" to have a "generic" expectation for "date/time".  
+New expectations might be added in the future, to the core gem or a new extension gem, for common formats of "date" values.  
+There is no clear schedule for the addition yet, so you should try to add your own expectation class to suit your application.  
+
 
 ### Matcher `be_json.with_sizes`
 
