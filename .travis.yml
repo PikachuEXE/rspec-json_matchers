@@ -8,7 +8,9 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - 2.3
+  # Since the Travis Build Env does not recognize `2.3` alias yet
+  # We need to specify the version precisely
+  - 2.3.0
   - ruby-head
 gemfile:
   - gemfiles/rspec_3_0.gemfile
