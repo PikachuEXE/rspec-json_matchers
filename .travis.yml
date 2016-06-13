@@ -5,18 +5,18 @@ language: ruby
 cache:
   - bundler
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
+  - 2.1.9
+  - 2.2.5
   # Since the Travis Build Env does not recognize `2.3` alias yet
   # We need to specify the version precisely
-  - 2.3.0
+  - 2.3.1
   - ruby-head
 gemfile:
   - gemfiles/rspec_3_0.gemfile
   - gemfiles/rspec_3_1.gemfile
   - gemfiles/rspec_3_2.gemfile
   - gemfiles/rspec_3_3.gemfile
+  - gemfiles/rspec_3_4.gemfile
 matrix:
   fast_finish: true
   allow_failures:
