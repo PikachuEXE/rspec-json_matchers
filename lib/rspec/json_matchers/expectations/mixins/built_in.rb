@@ -150,9 +150,11 @@ module RSpec
           class ArrayWithSize < AnyOf
             # `Fixnum` & `Bignum` will be returned instead of `Integer`
             # in `#class` for numbers
+            # But since 2.4.x it will be `Integer`
             EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = {
               Fixnum  => -> (v) { Expectations::Private::Eq[v] },
               Bignum  => -> (v) { Expectations::Private::Eq[v] },
+              Integer => -> (v) { Expectations::Private::Eq[v] },
               Range   => -> (v) { Expectations::Private::InRange[v] },
             }.freeze
             private_constant :EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING
