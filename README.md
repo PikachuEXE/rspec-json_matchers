@@ -509,15 +509,15 @@ Just use `ArrayWithSize`
 ```ruby
 specify do
   expect({a: [1]}.to_json).to be_json.
-    with_sizes(a: ArrayWithSize[1])
+    with_content(a: ArrayWithSize[1])
 end # => pass
 specify do
   expect({a: [1]}.to_json).to be_json.
-    with_sizes(a: ArrayWithSize[(0..2)])
+    with_content(a: ArrayWithSize[(0..2)])
 end # => pass
 specify do
   expect({a: [1]}.to_json).to be_json.
-    with_sizes(a: ArrayWithSize[1.1])
+    with_content(a: ArrayWithSize[1.1])
 end # => error
 ```
 
