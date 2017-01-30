@@ -1,6 +1,22 @@
 require "spec_helper"
 
 RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
+
+  let(:expectations) do
+    Module.new do
+      include RSpec::JsonMatchers::Expectations::Mixins::BuiltIn
+    end
+  end
+
+  before(:each) do
+    expectations.constants.each do |expectation_klass_name|
+      stub_const(
+        expectation_klass_name.to_s,
+        expectations.const_get(expectation_klass_name),
+      )
+    end
+  end
+
   context "when subject is NOT valid JSON" do
     subject { "" }
 
@@ -47,7 +63,11 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
           a: 1,
         }
       end
-      let!(:expected) { actual.dup }
+      let!(:expected) do
+        HashWithContent[{
+          a: 1,
+        }]
+      end
 
       context "and subject is exactly matched with expected" do
         it "DOES match" do
@@ -56,7 +76,11 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       end
 
       context "and subject is exactly matched with expected with string keys" do
-        before { expected.merge!("a" => expected.delete(:a)) }
+        let!(:expected) do
+          HashWithContent[{
+            "a" => 1,
+          }]
+        end
 
         it "DOES match" do
           should be_json.with_content(expected)
@@ -64,7 +88,11 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       end
 
       context "and subject has different content then expected" do
-        before { expected.merge!(a: 2) }
+        let!(:expected) do
+          HashWithContent[{
+            a: 2,
+          }]
+        end
 
         it "does NOT match" do
           should_not be_json.with_content(expected)
@@ -72,7 +100,10 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       end
 
       context "and expected has less keys than actual" do
-        before { expected.delete(:a) }
+        let!(:expected) do
+          HashWithContent[{
+          }]
+        end
 
         it "DOES match" do
           should be_json.with_content(expected)
@@ -90,7 +121,12 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
         context "and expected has more properties" do
           context "and subject has more properties" do
-            before { expected.merge!(b: 1) }
+            let!(:expected) do
+              HashWithContent[{
+                a: 1,
+                b: 1,
+              }]
+            end
 
             it "does NOT match" do
               should_not be_json.with_content(expected)
@@ -110,7 +146,13 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
           },
         }
       end
-      let!(:expected) { actual.dup }
+      let!(:expected) do
+        HashWithContent[{
+          a: HashWithContent[{
+            b: 1,
+          }],
+        }]
+      end
 
       context "and subject is exactly matched with expected" do
         it "DOES match" do
@@ -120,10 +162,12 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
       context "and subject has different content then expected" do
         context "the only difference is the content of the deepest key" do
-          before do
-            expected.merge!(
-              a: expected.fetch(:a).merge(b: 2),
-            )
+          let!(:expected) do
+            HashWithContent[{
+              a: HashWithContent[{
+                b: 2,
+              }],
+            }]
           end
 
           it "does NOT match" do
@@ -131,10 +175,10 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
           end
         end
         context "the only difference is the nesting" do
-          before do
-            expected.merge!(
+          let!(:expected) do
+            HashWithContent[{
               a: 1,
-            )
+            }]
           end
 
           it "does NOT match" do
@@ -156,7 +200,15 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
           },
         }
       end
-      let!(:expected) { actual.dup }
+      let!(:expected) do
+        HashWithContent[{
+          a: HashWithContent[{
+            b: HashWithContent[{
+              c: 1,
+            }],
+          }],
+        }]
+      end
 
       context "and subject is exactly matched with expected" do
         it "DOES match" do
@@ -166,10 +218,14 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
       context "and subject has different content then expected" do
         context "the only difference is the content of the deepest key" do
-          before do
-            expected.merge!(
-              a: expected.fetch(:a).fetch(:b).merge(c: 2),
-            )
+          let!(:expected) do
+            HashWithContent[{
+              a: HashWithContent[{
+                b: HashWithContent[{
+                  c: 2,
+                }],
+              }],
+            }]
           end
 
           it "does NOT match" do
@@ -177,159 +233,12 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
           end
         end
         context "the only difference is the nesting" do
-          before do
-            expected.merge!(
-              a: expected.fetch(:a).merge(b: 2),
-            )
-          end
-
-          it "does NOT match" do
-            should_not be_json.with_content(expected)
-          end
-        end
-      end
-    end
-  end
-
-  describe "validation of JSON array" do
-    context "with no nesting" do
-      subject { actual.to_json }
-
-      let(:actual) do
-        [
-          1,
-        ]
-      end
-      let!(:expected) { actual.dup }
-
-      context "and subject is exactly matched with expected" do
-        it "DOES match" do
-          should be_json.with_content(expected)
-        end
-      end
-
-      context "and subject has different content then expected" do
-        before { expected[0] = 2 }
-
-        it "does NOT match" do
-          should_not be_json.with_content(expected)
-        end
-      end
-
-      context "and expected has less keys than actual" do
-        before { expected.delete_at(0) }
-
-        it "DOES match" do
-          should be_json.with_content(expected)
-        end
-      end
-
-      context "and subject and expected have some common properties" do
-        context "and subject has more properties" do
-          before { actual[1] = 1 }
-
-          it "DOES match" do
-            should be_json.with_content(expected)
-          end
-        end
-
-        context "and expected has more properties" do
-          context "and subject has more properties" do
-            before { expected[1] = 1 }
-
-            it "does NOT match" do
-              should_not be_json.with_content(expected)
-            end
-          end
-        end
-      end
-    end
-
-    context "with max 2 levels deep" do
-      subject { actual.to_json }
-
-      let(:actual) do
-        [
-          [
-            1,
-          ],
-        ]
-      end
-      # Cannot find better alternative
-      # But we only put simple values inside `actual`
-      let!(:expected) { Marshal.load(Marshal.dump(actual)) }
-
-      context "and subject is exactly matched with expected" do
-        it "DOES match" do
-          should be_json.with_content(expected)
-        end
-      end
-
-      context "and subject has different content then expected" do
-        context "the only difference is the content of the deepest key" do
-          before do
-            expected[0] = expected[0].tap do |a|
-              a[0] = a[0] + 1
-            end
-          end
-
-          it "does NOT match" do
-            should_not be_json.with_content(expected)
-          end
-        end
-        context "the only difference is the nesting" do
-          before do
-            expected[0] = 1
-          end
-
-          it "does NOT match" do
-            should_not be_json.with_content(expected)
-          end
-        end
-      end
-    end
-
-    context "with max 3 levels deep" do
-      subject { actual.to_json }
-
-      let(:actual) do
-        [
-          [
-            [
-              1,
-            ],
-          ],
-        ]
-      end
-      # Cannot find better alternative
-      # But we only put simple values inside `actual`
-      let!(:expected) { Marshal.load(Marshal.dump(actual)) }
-
-      context "and subject is exactly matched with expected" do
-        it "DOES match" do
-          should be_json.with_content(expected)
-        end
-      end
-
-      context "and subject has different content then expected" do
-        context "the only difference is the content of the deepest key" do
-          before do
-            expected[0] = expected[0].tap do |a1|
-              a1[0] = a1[0].tap do |a2|
-                a2[0] = a2[0] + 1
-              end
-            end
-          end
-
-          it "does NOT match" do
-            should_not be_json.with_content(expected)
-          end
-        end
-        context "the only difference is the nesting" do
-          before do
-            expected[0] = expected[0].tap do |a1|
-              a1[0] = 1
-            end
+          let!(:expected) do
+            HashWithContent[{
+              a: HashWithContent[{
+                b: 2,
+              }],
+            }]
           end
 
           it "does NOT match" do

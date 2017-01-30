@@ -114,14 +114,6 @@ specify { expect({a: 1, b: 2}.to_json).to be_json.with_content({a: 1}) }  # => p
 specify { expect({a: 1}.to_json).to be_json.with_content({a: 1, b: 2}) }  # => fail
 ```
 
-It's possible to make examples fail when the object represented by JSON string in `subject`
-contains more keys than that in expectation using `with_exact_keys`.
-
-```ruby
-# The spec can be set to fail when actual has more keys than expected
-specify { expect({a: 1, b: 2}.to_json).to be_json.with_content({a: 1}).with_exact_keys }  # => fail
-```
-
 A "path" can also be specified for testing deeply nested data.
 
 ```ruby
@@ -474,6 +466,23 @@ specify do
   expect({a: 1}.to_json).to be_json.
     with_content(a: expectations::AllOf[false, false, false])
 end # => fail
+```
+
+It's possible to make examples fail when the object represented by JSON string in `subject`
+contains more keys than that in expectation using `HashWithContent` & `#with_exact_keys`.  
+`HashWithContent` is the expectation class that is automatically used when a `Hash` is passed.
+
+
+```ruby
+# The spec can be set to fail when actual has more keys than expected
+specify do
+  expect({a: 1, b: 2}.to_json).
+    to be_json.
+    with_content(
+      expectations::HashWithContent[{a: 1}].with_exact_keys
+    )
+  # => fail
+end
 ```
 
 #### Custom/Complex Expectations NOT included on purpose

@@ -91,10 +91,13 @@ module RSpec
         OBJECT_CLASS_TO_EXPECTATION_HASH = {
           Regexp => -> (obj) { Expectations::Private::MatchingRegexp[obj] },
           Range => -> (obj) { Expectations::Private::InRange[obj] },
+          Hash => -> (obj) { Expectations::Mixins::BuiltIn::HashWithContent[obj] },
         }.freeze
         private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
 
-        attr_reader(*[:object])
+        attr_reader(
+          :object,
+        )
 
         def expectation_by_class
           if instance_variable_defined?(:@expectation_by_object_class)
@@ -104,7 +107,8 @@ module RSpec
           proc = OBJECT_CLASS_TO_EXPECTATION_HASH[object.class]
           return nil if proc.nil?
 
-          proc.call(object)
+          # Assign (cache) and return
+          @expectation_by_object_class = proc.call(object)
         end
 
         def expectation_by_ancestors

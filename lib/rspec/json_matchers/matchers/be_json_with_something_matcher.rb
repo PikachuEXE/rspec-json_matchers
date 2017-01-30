@@ -17,8 +17,9 @@ module RSpec
       class BeJsonWithSomethingMatcher < BeJsonMatcher
         extend AbstractClass
 
-        attr_reader(*[:expected, :path, :with_exact_keys])
-        alias_method :with_exact_keys?, :with_exact_keys
+        attr_reader(*[
+          :path,
+        ])
 
         def initialize(expected)
           @expected     = expected
@@ -70,23 +71,6 @@ module RSpec
           self
         end
 
-        # When `exactly` is `true`,
-        # makes the matcher to fail the example
-        # when actual has more elements than expected even expectation passes
-        #
-        # When `exactly` is `true`,
-        # makes the matcher to pass the example
-        # when actual has more elements than expected and expectation passes
-        #
-        # @param exactly [Boolean]
-        #   whether the matcher should match keys in actual & expected exactly
-        #
-        # @return (see #at_path)
-        def with_exact_keys(exactly = true)
-          @with_exact_keys = exactly
-          self
-        end
-
         # Overrides {BeJsonMatcher#failure_message}
         def failure_message
           return super if has_parser_error?
@@ -101,6 +85,10 @@ module RSpec
 
         private
 
+        attr_reader(
+          :expected,
+        )
+
         def failure_message_for(should_match)
           return invalid_path_message unless has_valid_path?
           return path_error_message if has_path_error?
@@ -112,13 +100,9 @@ module RSpec
         def expected_and_actual_matched?
           extracted_actual = actual
           return false if has_path_error?
-          result = comparer_klass.
-            new(extracted_actual, expected, reasons, value_matching_proc).
-            compare
 
-          result.matched?.tap do |matched|
-            @reasons = result.reasons unless matched
-          end
+          expectation = Expectation.build(expected)
+          expectation.expect?(extracted_actual)
         end
 
         def reasons
@@ -173,14 +157,6 @@ module RSpec
         # For both positive and negative
         def invalid_path_message
           %(path "#{path}" is invalid)
-        end
-
-        def comparer_klass
-          if with_exact_keys?
-            Comparers::ExactKeysComparer
-          else
-            Comparers::IncludeKeysComparer
-          end
         end
       end
     end

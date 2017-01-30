@@ -11,10 +11,6 @@ module RSpec
       # @api private
       class BeJsonWithContentMatcher < BeJsonWithSomethingMatcher
         private
-
-        def value_matching_proc
-          -> (expected, actual) { Expectation.build(expected).expect?(actual) }
-        end
       end
     end
   end

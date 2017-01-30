@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe(*[
@@ -31,10 +33,33 @@ RSpec.describe(*[
     end
 
     describe "#at_path" do
-      it { should be_json.with_content(a: { b: { c: 1 } }) }
-      it { should be_json.with_content(b: { c: 1 }).at_path("a") }
-      it { should be_json.with_content(c: 1).at_path("a.b") }
-      it { should be_json.with_content(1).at_path("a.b.c") }
+      it "matches matcher with no path" do
+        should be_json.with_content(HashWithContent[{
+          a: HashWithContent[{
+            b: HashWithContent[{
+              c: 1,
+            }],
+          }],
+        }])
+      end
+
+      it "matches matcher with path 1 level(s) deep" do
+        should be_json.with_content(HashWithContent[{
+          b: HashWithContent[{
+            c: 1,
+          }],
+        }]).at_path("a")
+      end
+
+      it "matches matcher with path 2 level(s) deep" do
+        should be_json.with_content(HashWithContent[{
+          c: 1,
+        }]).at_path("a.b")
+      end
+
+      it "matches matcher with path 3 level(s) deep" do
+        should be_json.with_content(1).at_path("a.b.c")
+      end
     end
 
     describe "the matcher fails the example when no data is on the path" do
@@ -86,78 +111,22 @@ RSpec.describe(*[
         }.to_json
       end
 
-      it { should be_json.with_content("2" => 1).at_path("1") }
-      it { should be_json.with_content(1).at_path("1.2") }
-    end
-  end
-
-  context "when subject is valid JSON array" do
-    subject do
-      [
-        [
-          [
-            1,
-          ],
-        ],
-      ].to_json
-    end
-
-    describe "#at_path" do
-      it { should be_json.with_content([[[1]]]) }
-
-      it { should be_json.with_content([[1]]).at_path("0") }
-      it { should be_json.with_content([1]).at_path("0.0") }
-      it { should be_json.with_content(1).at_path("0.0.0") }
-    end
-
-    describe "the matcher fails the example when no data is on the path" do
-      it { should_not be_json.with_content(Anything).at_path("0.0.1") }
-      it { should_not be_json.with_content(Anything).at_path("0.0.0.0") }
-    end
-
-    describe "when there is data is on the path, and using `should_not`" do
-      it "the matcher fails the example" do
-        expect(be_json.with_content(Anything).at_path("0.0.0").
-          does_not_match?(subject)).to eq(false)
-      end
-    end
-
-    describe "the matcher fails the example when path is invalid" do
-      it do
-        expect(be_json.with_content(Anything).at_path(".").
-          matches?(subject)).to eq(false)
-      end
-      it do
-        expect(be_json.with_content(Anything).at_path(".0.").
-          matches?(subject)).to eq(false)
-      end
-      it do
-        expect(be_json.with_content(Anything).at_path("0..0").
-          matches?(subject)).to eq(false)
+      it "matches matcher with no path" do
+        should be_json.with_content(HashWithContent[{
+          "1" => HashWithContent[{
+            "2" => 1,
+          }],
+        }])
       end
 
-      it do
-        expect(be_json.with_content(Anything).at_path(".").
-          does_not_match?(subject)).to eq(false)
+      it "matches matcher with path 1 level(s) deep" do
+        should be_json.with_content(HashWithContent[{
+          "2" => 1,
+        }]).at_path("1")
       end
-      it do
-        expect(be_json.with_content(Anything).at_path(".0.").
-          does_not_match?(subject)).to eq(false)
-      end
-      it do
-        expect(be_json.with_content(Anything).at_path("0..0").
-          does_not_match?(subject)).to eq(false)
-      end
-    end
 
-    describe "when path is invalid due to containing non-digit" do
-      specify "the matcher fails the example for `should`" do
-        expect(be_json.with_content("whatever").at_path("a").
-          matches?(subject)).to eq(false)
-      end
-      specify "the matcher passes the example for `should_not`" do
-        expect(be_json.with_content("whatever").at_path("a").
-          does_not_match?(subject)).to eq(true)
+      it "matches matcher with path 2 level(s) deep" do
+        should be_json.with_content(1).at_path("1.2")
       end
     end
   end

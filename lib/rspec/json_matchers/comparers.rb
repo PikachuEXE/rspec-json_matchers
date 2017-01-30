@@ -1,4 +1,3 @@
-require_relative "comparers/exact_keys_comparer"
 require_relative "comparers/include_keys_comparer"
 
 module RSpec
