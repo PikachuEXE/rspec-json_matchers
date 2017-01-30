@@ -1,3 +1,4 @@
+require "set"
 require "abstract_class"
 
 require_relative "../core"
@@ -182,6 +183,64 @@ module RSpec
             def expect?(value)
               value.is_a?(Array) &&
                 super(value.size)
+            end
+          end
+
+          class HashWithContent < Expectations::Core::SingleValueCallableExpectation
+            EXPECTED_CLASS = ::Hash
+            private_constant :EXPECTED_CLASS
+
+            def expect?(value)
+              matches_expected_class?(value) &&
+                matches_content_expectations?(value) &&
+                matches_keys_exactly?(value)
+            end
+
+            def with_exact_keys
+              @require_exact_key_matches = true
+              self
+            end
+
+            private
+
+            attr_reader :require_exact_key_matches
+            alias_method(
+              :require_exact_key_matches?,
+              :require_exact_key_matches,
+            )
+            attr_reader :expected_value
+
+            def matches_expected_class?(value)
+              value.is_a?(::Hash)
+            end
+
+            def matches_keys_exactly?(actual_value)
+              return true unless require_exact_key_matches?
+
+              ::Set.new(expected_value.keys.map(&:to_s)) ==
+                ::Set.new(actual_value.keys.map(&:to_s))
+            end
+
+            def matches_content_expectations?(actual_value)
+              expected_value.each_pair.all? do |exp_key, exp_value|
+                unless actual_value.key?(exp_key) ||
+                    actual_value.key?(exp_key.to_s)
+                  return false
+                end
+
+                value_from_actual = actual_value.fetch(exp_key) do
+                  actual_value.fetch(exp_key.to_s)
+                end
+                Expectation.build(exp_value).expect?(value_from_actual)
+              end
+            end
+
+            def initialize(value)
+              unless value.is_a?(::Hash)
+                fail ArgumentError, "a #{EXPECTED_CLASS} is required"
+              end
+
+              @expected_value = value
             end
           end
         end

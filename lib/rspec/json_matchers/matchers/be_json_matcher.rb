@@ -45,19 +45,6 @@ module RSpec
           BeJsonWithContentMatcher.new(expected)
         end
 
-        # @api
-        #
-        # Get a matcher that try to match the content of actual
-        # with nested expectations about array sizes
-        #
-        # @param expected [Hash, Array, Object]
-        #   the expectation object
-        #
-        # @return [BeJsonWithSizesMatcher] a matcher object
-        def with_sizes(expected)
-          BeJsonWithSizesMatcher.new(expected)
-        end
-
         # Expectation description in spec result summary
         #
         # @return [String]
@@ -95,4 +82,3 @@ end
 # since the classes are only required
 # on runtime but not load time
 require_relative "be_json_with_content_matcher"
-require_relative "be_json_with_sizes_matcher"

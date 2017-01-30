@@ -114,14 +114,6 @@ specify { expect({a: 1, b: 2}.to_json).to be_json.with_content({a: 1}) }  # => p
 specify { expect({a: 1}.to_json).to be_json.with_content({a: 1, b: 2}) }  # => fail
 ```
 
-It's possible to make examples fail when the object represented by JSON string in `subject`
-contains more keys than that in expectation using `with_exact_keys`.
-
-```ruby
-# The spec can be set to fail when actual has more keys than expected
-specify { expect({a: 1, b: 2}.to_json).to be_json.with_content({a: 1}).with_exact_keys }  # => fail
-```
-
 A "path" can also be specified for testing deeply nested data.
 
 ```ruby
@@ -476,6 +468,23 @@ specify do
 end # => fail
 ```
 
+It's possible to make examples fail when the object represented by JSON string in `subject`
+contains more keys than that in expectation using `HashWithContent` & `#with_exact_keys`.  
+`HashWithContent` is the expectation class that is automatically used when a `Hash` is passed.
+
+
+```ruby
+# The spec can be set to fail when actual has more keys than expected
+specify do
+  expect({a: 1, b: 2}.to_json).
+    to be_json.
+    with_content(
+      expectations::HashWithContent[{a: 1}].with_exact_keys
+    )
+  # => fail
+end
+```
+
 #### Custom/Complex Expectations NOT included on purpose
 
 ##### Date
@@ -489,29 +498,27 @@ There is no clear schedule for the addition yet, so you should try to add your o
 
 ### Matcher `be_json.with_sizes`
 
-This is a more convenient version of using `be_json.with_sizes` only with `ArrayWithSize`.  
-Since you can just pass `Fixnum`, `Bignum` or `Range` without typing `ArrayWithSize`.  
-Things like `with_exact_keys` & `at_path` can still be used.  
+Used to have in earlier alpha versions.
+Indended to ease the migration from other gems but 
+it also makes the gem more difficult to maintain.
+Removed in later alpha version(s).
+
+Just use `ArrayWithSize`
+
 
 ```ruby
 specify do
   expect({a: [1]}.to_json).to be_json.
-    with_sizes(a: 1)
+    with_sizes(a: ArrayWithSize[1])
 end # => pass
 specify do
   expect({a: [1]}.to_json).to be_json.
-    with_sizes(a: (0..2))
+    with_sizes(a: ArrayWithSize[(0..2)])
 end # => pass
 specify do
   expect({a: [1]}.to_json).to be_json.
-    with_sizes(a: 1.1)
+    with_sizes(a: ArrayWithSize[1.1])
 end # => error
-
-# But you can no longer pass multiple "expectations" for `AnyOf` behaviour
-specify do
-  expect({a: [1]}.to_json).to be_json.
-    with_content(a: [0, 1, 3])
-end # => fail, expects {a: [[], [1], [1, 2, 3]])
 ```
 
 

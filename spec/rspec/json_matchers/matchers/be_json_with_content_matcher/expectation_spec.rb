@@ -989,6 +989,135 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           end
         end
       end
+
+      describe "Expectations::Mixins::BuiltIn::HashWithContent" do
+        describe "#with_exact_keys" do
+          subject { actual.to_json }
+
+          let(:actual) do
+            {
+              a: 1,
+            }
+          end
+          let!(:expected) do
+            RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::HashWithContent[
+              a: 1,
+            ]
+          end
+
+          context "and subject is exactly matched with expected" do
+            it "DOES match" do
+              should be_json.with_content(expected.with_exact_keys)
+            end
+          end
+
+          context "and subject has different content then expected" do
+            let!(:expected) do
+              RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::HashWithContent[
+                a: 2,
+              ]
+            end
+
+            it "does NOT match" do
+              should_not be_json.with_content(expected.with_exact_keys)
+            end
+          end
+
+          context "and expected has less keys than actual" do
+            let!(:expected) do
+              RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::HashWithContent[{
+                # empty
+              }]
+            end
+
+            it "does NOT match" do
+              should_not be_json.with_content(expected.with_exact_keys)
+            end
+          end
+
+          context "and subject and expected have some common properties" do
+            context "and subject has more properties" do
+              before { actual.merge!(b: 1) }
+
+              it "does NOT match" do
+                should_not be_json.with_content(expected.with_exact_keys)
+              end
+            end
+
+            context "and expected has more properties" do
+              context "and subject has more properties" do
+                let!(:expected) do
+                  RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::HashWithContent[
+                    a: 1,
+                    b: 1,
+                  ]
+                end
+
+                it "does NOT match" do
+                  should_not be_json.with_content(expected.with_exact_keys)
+                end
+              end
+            end
+          end
+        end
+
+        describe "handling of nested expectations" do
+          subject { actual.to_json }
+
+          let!(:expected) do
+            RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::HashWithContent[
+              object: RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::HashWithContent[
+                bool:   RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::BooleanValue,
+                number: RSpec::JsonMatchers::Expectations::Mixins::BuiltIn::PositiveNumber,
+                string: /str/,
+              ],
+            ]
+          end
+
+          context "when property is NOT an object" do
+            let(:actual) do
+              {
+                object: 1,
+              }
+            end
+
+            it "does NOT match" do
+              should_not be_json.with_content(expected.with_exact_keys)
+            end
+          end
+
+          context "when property IS an object but missing some key" do
+            let(:actual) do
+              {
+                object: {
+                  bool:   true,
+                  number: 1,
+                },
+              }
+            end
+
+            it "does NOT match" do
+              should_not be_json.with_content(expected.with_exact_keys)
+            end
+          end
+
+          context "when property IS an object but some value does not match expectation" do
+            let(:actual) do
+              {
+                object: {
+                  bool:   true,
+                  number: 1,
+                  string: "123",
+                },
+              }
+            end
+
+            it "does NOT match" do
+              should_not be_json.with_content(expected.with_exact_keys)
+            end
+          end
+        end
+      end
     end
   end
 end
