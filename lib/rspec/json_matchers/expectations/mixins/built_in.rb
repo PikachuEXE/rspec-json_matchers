@@ -152,12 +152,21 @@ module RSpec
             # `Fixnum` & `Bignum` will be returned instead of `Integer`
             # in `#class` for numbers
             # But since 2.4.x it will be `Integer`
-            EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = {
-              Fixnum  => -> (v) { Expectations::Private::Eq[v] },
-              Bignum  => -> (v) { Expectations::Private::Eq[v] },
-              Integer => -> (v) { Expectations::Private::Eq[v] },
-              Range   => -> (v) { Expectations::Private::InRange[v] },
-            }.freeze
+            EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = begin
+              {
+                Range   => -> (v) { Expectations::Private::InRange[v] },
+                Integer => -> (v) { Expectations::Private::Eq[v] },
+              }.tap do |result_hash|
+                # This fix is similar to
+                # https://github.com/rails/rails/pull/26732
+                next if 1.class == Integer
+
+                result_hash.merge!(
+                  Fixnum => -> (v) { Expectations::Private::Eq[v] },
+                  Bignum => -> (v) { Expectations::Private::Eq[v] },
+                )
+              end
+            end.freeze
             private_constant :EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING
 
             class << self
