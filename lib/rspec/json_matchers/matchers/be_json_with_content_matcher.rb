@@ -14,9 +14,9 @@ module RSpec
       # This is not merged with {BeJsonMatcher}
       # since it should be able to be used alone
       class BeJsonWithContentMatcher < BeJsonMatcher
-        attr_reader(*[
+        attr_reader(
           :path,
-        ])
+        )
 
         def initialize(expected)
           @expected     = expected
