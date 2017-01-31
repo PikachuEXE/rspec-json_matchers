@@ -195,6 +195,11 @@ module RSpec
             end
           end
 
+          # Takes a {Hash}
+          # Validates `value` to be {Hash} and
+          # contain expected keys & values
+          # Extra keys in `value` will not be treated as "unexpected"
+          # Unless {#with_exact_keys} is used
           class HashWithContent < Expectations::Core::SingleValueCallableExpectation
             EXPECTED_CLASS = ::Hash
             private_constant :EXPECTED_CLASS
@@ -205,6 +210,10 @@ module RSpec
                 matches_keys_exactly?(value)
             end
 
+            # After calling this method
+            # Any extra key in `value` will be marked as "unexpected"
+            #
+            # By default the expectation won't care about extra keys in `value`
             def with_exact_keys
               @require_exact_key_matches = true
               self
