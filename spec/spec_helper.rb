@@ -2,8 +2,11 @@ $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 require "rspec-json_matchers"
 
 if ENV["TRAVIS"]
-  require "coveralls"
-  Coveralls.wear!
+  require "simplecov"
+  SimpleCov.start
+
+  require "codecov"
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
 end
 
 RSpec.configure do |config|
