@@ -9,7 +9,7 @@ A collection of RSpec matchers for testing JSON data.
 [![Dependency Status](http://img.shields.io/gemnasium/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://gemnasium.com/PikachuEXE/rspec-json_matchers)
 
 [![Code Climate](http://img.shields.io/codeclimate/github/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codeclimate.com/github/PikachuEXE/rspec-json_matchers)
-[![Coverage Status](http://img.shields.io/coveralls/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://coveralls.io/r/PikachuEXE/rspec-json_matchers)
+[![Coverage Status](https://img.shields.io/codecov/c/github/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codecov.io/gh/PikachuEXE/rspec-json_matchers)
 [![Inch CI](https://inch-ci.org/github/PikachuEXE/rspec-json_matchers.svg?branch=master)](https://inch-ci.org/github/PikachuEXE/rspec-json_matchers)
 
 [![Gitter](https://img.shields.io/badge/gitter-join%20chat-1dce73.svg?style=flat-square)](https://gitter.im/PikachuEXE/rspec-json_matchers)
