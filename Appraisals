@@ -1,4 +1,4 @@
-
+# rubocop:disable MethodCallWithArgsParentheses
 appraise "rspec_3_0" do
   gem "rspec", "~> 3.0.0"
   # https://github.com/rspec/rspec-core/issues/2205
@@ -32,5 +32,6 @@ appraise "rspec_3_5" do
 end
 
 appraise "rspec_3_6" do
-  gem "rspec", ">= 3.6.0.beta2", "< 3.7.0"
+  gem "rspec", "~> 3.6.0"
 end
+# rubocop:enable MethodCallWithArgsParentheses
