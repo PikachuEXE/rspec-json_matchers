@@ -1,4 +1,4 @@
-# rubocop:disable Style/MethodCallWithArgsParentheses
+
 require "appraisal"
 require "rubygems"
 require "bundler/gem_tasks"
