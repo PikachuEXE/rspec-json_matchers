@@ -541,6 +541,17 @@ for `Run/Debug Configurations => Defaults => RSpec`
 That way you could keep the color when running `rspec` from console
 
 
+## Some JSON related gems
+Here is a list of gems which I found and I have tried some of them.  
+But eventually I am unsatisfied so I build this gem.  
+
+- [rspec-json_matcher](https://github.com/r7kamura/rspec-json_matcher)
+- [json_spec](https://github.com/collectiveidea/json_spec)
+- [json_matchers](https://github.com/thoughtbot/json_matchers)
+- [airborne](https://github.com/brooklynDev/airborne)
+- [json-schema](https://github.com/ruby-json-schema/json-schema)
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/PikachuEXE/rspec-json_matchers/fork )
