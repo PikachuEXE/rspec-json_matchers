@@ -39,7 +39,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "gem-release", "~> 0.7"
 
-  spec.add_development_dependency "rubocop", "~> 0.32"
   spec.add_development_dependency "inch", "~> 0.6"
 
   spec.required_ruby_version = ">= 2.3.0"
