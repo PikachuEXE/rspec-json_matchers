@@ -22,6 +22,7 @@ gemfile:
   - gemfiles/rspec_3_4.gemfile
   - gemfiles/rspec_3_5.gemfile
   - gemfiles/rspec_3_6.gemfile
+  - gemfiles/rspec_3_7.gemfile
 matrix:
   fast_finish: true
   allow_failures:
