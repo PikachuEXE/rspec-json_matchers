@@ -8,4 +8,5 @@
 /tmp/
 /.idea/
 /.rspec
-gemfiles/*.gemfile.lock
+/gemfiles/.bundle/
+/gemfiles/*.gemfile.lock
