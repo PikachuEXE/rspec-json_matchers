@@ -1,5 +1,5 @@
 # Story of the project
-This file describes the motive of building this project, alternatives and the future.
+This file describes the story & motive of building this project.
 
 ## Alternative projects that had been used before
 The author of this project does his job as a developer mainly on a Ruby on Rails project, which contains endpoints returning responses with JSON data. And he uses RSpec (only) to write tests for those endpoints.
@@ -109,20 +109,8 @@ Same as `json-matchers`
   - [Code Climate](https://codeclimate.com/) to ensure high code quality
   - [Coveralls](https://coveralls.io/) to ensure high test coverage
   - [Inch CI](https://inch-ci.org/) to ensure inline doc with quality
-  - [Gitter](https://gitter.im/) for a free chat room for the project
+  - [Gitter](https://gitter.im/) for a free chat room for the project (but actually rarely used)
 - Add badges to README
-- Refactor according to result from Code Climate & [rubocop](https://github.com/bbatsov/rubocop)
+- Refactor according to result from Code Climate
 - Improve inline doc according to result from running [inch](https://github.com/rrrene/inch) locally
 - Release an "alpha" version and actually it in real project
-
-
-# Future
-In the near future:
-- Release a "beta" version for public testing and feedback
-- React according to feedback before the official version release, if any
-- Add `CONTRIBUTING.md` if appropriate
-
-There are several features that might be considered to be implemented in the future:
-- Built-in "expectation" for "date"
-- Path matching feature in [`airborne`](https://github.com/brooklynDev/airborne)
-- `be_json.with_types` which only accepts classes (only? not sure)
