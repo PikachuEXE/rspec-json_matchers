@@ -89,9 +89,9 @@ module RSpec
         private
 
         OBJECT_CLASS_TO_EXPECTATION_HASH = {
-          Regexp => -> (obj) { Expectations::Private::MatchingRegexp[obj] },
-          Range => -> (obj) { Expectations::Private::InRange[obj] },
-          Hash => -> (obj) { Expectations::Mixins::BuiltIn::HashWithContent[obj] },
+          Regexp => ->(obj) { Expectations::Private::MatchingRegexp[obj] },
+          Range => ->(obj) { Expectations::Private::InRange[obj] },
+          Hash => ->(obj) { Expectations::Mixins::BuiltIn::HashWithContent[obj] },
         }.freeze
         private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
 

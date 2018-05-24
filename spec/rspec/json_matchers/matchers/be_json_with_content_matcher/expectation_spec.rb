@@ -204,7 +204,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
       let(:callable) { fail NotImplementedError }
 
       context "when expected is a `Proc`" do
-        let(:callable) { -> (_) { callable_return_value } }
+        let(:callable) { ->(_) { callable_return_value } }
         let(:callable_return_value) { fail NotImplementedError }
 
         context "when expected returned false" do
