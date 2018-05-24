@@ -163,7 +163,7 @@ module RSpec
 
                 result_hash.merge!(
                   Fixnum => -> (v) { Expectations::Private::Eq[v] },
-                  Bignum => -> (v) { Expectations::Private::Eq[v] },
+                  Bignum => -> (v) { Expectations::Private::Eq[v] }
                 )
               end
             end.freeze
@@ -224,7 +224,7 @@ module RSpec
             attr_reader :require_exact_key_matches
             alias_method(
               :require_exact_key_matches?,
-              :require_exact_key_matches,
+              :require_exact_key_matches
             )
             attr_reader :expected_value
 

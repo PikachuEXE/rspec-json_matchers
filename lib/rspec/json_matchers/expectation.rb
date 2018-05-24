@@ -96,7 +96,7 @@ module RSpec
         private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
 
         attr_reader(
-          :object,
+          :object
         )
 
         def expectation_by_class
