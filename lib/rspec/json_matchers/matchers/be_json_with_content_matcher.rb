@@ -15,7 +15,7 @@ module RSpec
       # since it should be able to be used alone
       class BeJsonWithContentMatcher < BeJsonMatcher
         attr_reader(
-          :path,
+          :path
         )
 
         def initialize(expected)
@@ -82,7 +82,7 @@ module RSpec
         private
 
         attr_reader(
-          :expected,
+          :expected
         )
 
         def failure_message_for(should_match)
