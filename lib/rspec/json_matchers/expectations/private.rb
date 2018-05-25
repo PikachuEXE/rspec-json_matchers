@@ -137,7 +137,7 @@ module RSpec
             unless value.respond_to?(:call)
               fail(
                 ArgumentError,
-                "an object which respond to `:call` is required",
+                "an object which respond to `:call` is required"
               )
             end
             @callable = value
@@ -179,7 +179,7 @@ module RSpec
             # @return [Hash]
             def expectation_classes_mappings
               super.merge(
-                ADDITIONAL_EXPECTATION_CLASS_MAPPINGS,
+                ADDITIONAL_EXPECTATION_CLASS_MAPPINGS
               )
             end
           end
