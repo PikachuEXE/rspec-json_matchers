@@ -16,7 +16,7 @@ RSpec.describe(*[
     expectations.constants.each do |expectation_klass_name|
       stub_const(
         expectation_klass_name.to_s,
-        expectations.const_get(expectation_klass_name),
+        expectations.const_get(expectation_klass_name)
       )
     end
   end
