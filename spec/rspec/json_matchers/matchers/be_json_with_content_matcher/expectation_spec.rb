@@ -228,7 +228,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         context "and it's an instance of a custom class" do
           let(:callable) do
             instance_double("CallableInstance",
-              call: callable_return_value,
+              call: callable_return_value
             )
           end
           let(:callable_return_value) { fail NotImplementedError }
@@ -253,7 +253,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         context "and it's a `Class`" do
           let(:callable_class) do
             class_double("CallableClass",
-              call: callable_return_value,
+              call: callable_return_value
             )
           end
           let(:callable) { callable_class }
