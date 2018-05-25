@@ -154,16 +154,16 @@ module RSpec
             # But since 2.4.x it will be `Integer`
             EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = begin
               {
-                Range   => -> (v) { Expectations::Private::InRange[v] },
-                Integer => -> (v) { Expectations::Private::Eq[v] },
+                Range   => ->(v) { Expectations::Private::InRange[v] },
+                Integer => ->(v) { Expectations::Private::Eq[v] },
               }.tap do |result_hash|
                 # This fix is similar to
                 # https://github.com/rails/rails/pull/26732
                 next if 1.class == Integer
 
                 result_hash.merge!(
-                  Fixnum => -> (v) { Expectations::Private::Eq[v] },
-                  Bignum => -> (v) { Expectations::Private::Eq[v] },
+                  Fixnum => ->(v) { Expectations::Private::Eq[v] },
+                  Bignum => ->(v) { Expectations::Private::Eq[v] },
                 )
               end
             end.freeze
@@ -173,7 +173,7 @@ module RSpec
               # Overrides {Expectation.build}
               def build(value)
                 expectation_classes_mappings.fetch(value.class) do
-                  -> (_) { fail ArgumentError, <<-ERR }
+                  ->(_) { fail ArgumentError, <<-ERR }
                     Expected expection(s) to be kind of
                     #{expectation_classes_mappings.keys.inspect}
                     but found #{value.inspect}

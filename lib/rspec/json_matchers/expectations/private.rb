@@ -164,8 +164,8 @@ module RSpec
           # `Fixnum` & `Bignum` will be returned instead of `Integer`
           # in `#class` for numbers
           ADDITIONAL_EXPECTATION_CLASS_MAPPINGS = {
-            Array   => -> (_) { Expectations::Private::Nothing::INSTANCE },
-            Hash    => -> (_) { Expectations::Private::Nothing::INSTANCE },
+            Array   => ->(_) { Expectations::Private::Nothing::INSTANCE },
+            Hash    => ->(_) { Expectations::Private::Nothing::INSTANCE },
           }.freeze
           private_constant :ADDITIONAL_EXPECTATION_CLASS_MAPPINGS
 
