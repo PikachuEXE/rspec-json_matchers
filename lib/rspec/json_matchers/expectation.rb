@@ -44,6 +44,7 @@ module RSpec
         def build(value)
           Builder.new(value).build
         end
+
         # @api private
         #
         # "Build" expectation objects (not classes) depending on `values`

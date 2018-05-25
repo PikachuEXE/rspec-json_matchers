@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
-
   let(:expectations) do
     Module.new do
       include RSpec::JsonMatchers::Expectations::Mixins::BuiltIn
