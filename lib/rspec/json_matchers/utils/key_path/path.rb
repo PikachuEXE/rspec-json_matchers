@@ -25,7 +25,7 @@ module RSpec
           |
           #{Regexp.escape(PATH_PART_SPLITTER)}$
           )
-          /x
+          /x.freeze
 
           # Creates a {Path}
           # with a {String} (mainly from external)
