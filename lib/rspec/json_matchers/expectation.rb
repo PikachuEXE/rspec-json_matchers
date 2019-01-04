@@ -118,6 +118,7 @@ module RSpec
           if object < Expectations::Core::SingletonExpectation
             return object::INSTANCE
           end
+
           Expectations::Private::KindOf[object]
         end
 

@@ -63,6 +63,7 @@ module RSpec
             unless value.is_a?(EXPECTED_CLASS)
               fail ArgumentError, "a #{EXPECTED_CLASS} is required"
             end
+
             @expected_class = value
           end
         end
@@ -88,6 +89,7 @@ module RSpec
             unless value.is_a?(EXPECTED_CLASS)
               fail ArgumentError, "a #{EXPECTED_CLASS} is required"
             end
+
             @range = value
           end
         end
@@ -115,6 +117,7 @@ module RSpec
             unless value.is_a?(EXPECTED_CLASS)
               fail ArgumentError, "a #{EXPECTED_CLASS} is required"
             end
+
             @regexp = value
           end
         end

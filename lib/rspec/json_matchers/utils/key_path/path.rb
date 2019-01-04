@@ -79,6 +79,7 @@ module RSpec
           def extract(object)
             return Extraction::Result.new(object, true) if empty?
             return Extraction::Result.new(object, false) if invalid?
+
             Extraction.new(object, self).extract
           end
 

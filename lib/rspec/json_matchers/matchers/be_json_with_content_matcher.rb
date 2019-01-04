@@ -70,12 +70,14 @@ module RSpec
         # Overrides {BeJsonMatcher#failure_message}
         def failure_message
           return super if has_parser_error?
+
           failure_message_for(true)
         end
 
         # Overrides {BeJsonMatcher#failure_message_when_negated}
         def failure_message_when_negated
           return super if has_parser_error?
+
           failure_message_for(false)
         end
 
