@@ -7,12 +7,17 @@ before_install:
   # https://github.com/sickill/rainbow/issues/48
   - gem update --system
   - gem --version
+  # Cannot use bundler 2.x due to dependency
+  # Solution from https://github.com/travis-ci/travis-ci/issues/5290#issuecomment-164600246
+  - rvm @global do gem uninstall bundler -a -x
+  - rvm @global do gem install bundler -v '~> 1.17.0'
 cache:
   - bundler
 rvm:
-  - 2.3.6
-  - 2.4.3
-  - 2.5.0
+  - 2.3
+  - 2.4
+  - 2.5
+  - 2.6
   - ruby-head
 gemfile:
   - gemfiles/rspec_3_0.gemfile
@@ -23,6 +28,7 @@ gemfile:
   - gemfiles/rspec_3_5.gemfile
   - gemfiles/rspec_3_6.gemfile
   - gemfiles/rspec_3_7.gemfile
+  - gemfiles/rspec_3_8.gemfile
 matrix:
   fast_finish: true
   allow_failures:
