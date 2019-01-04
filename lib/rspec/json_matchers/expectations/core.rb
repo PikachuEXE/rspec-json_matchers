@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "abstract_class"
 
 require_relative "../expectation"
