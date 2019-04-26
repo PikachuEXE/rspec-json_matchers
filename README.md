@@ -6,7 +6,6 @@ A collection of RSpec matchers for testing JSON data.
 [![License](https://img.shields.io/github/license/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
 
 [![Build Status](http://img.shields.io/travis/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://travis-ci.org/PikachuEXE/rspec-json_matchers)
-[![Dependency Status](http://img.shields.io/gemnasium/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://gemnasium.com/PikachuEXE/rspec-json_matchers)
 
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codeclimate.com/github/PikachuEXE/rspec-json_matchers)
 [![Coverage Status](https://img.shields.io/codecov/c/github/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codecov.io/gh/PikachuEXE/rspec-json_matchers)
