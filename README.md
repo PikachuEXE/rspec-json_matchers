@@ -82,8 +82,8 @@ it matches when they have equivalent values (using `==`).
 specify { expect("{}").to be_json.with_content(Hash.new) }    # => pass
 specify { expect("[]").to be_json.with_content(Array.new) }   # => pass
 
-specify { expect("{}").to be_json.with_content(Hash.new) }    # => fail
-specify { expect("[]").to be_json.with_content(Array.new) }   # => fail
+specify { expect("{}").to be_json.with_content(Array.new) }    # => fail
+specify { expect("[]").to be_json.with_content(Hash.new) }   # => fail
 
 # The following line would fail when trying parse the input as JSON
 # So you can be sure the input is a valid JSON
