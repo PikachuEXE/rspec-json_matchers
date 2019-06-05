@@ -15,7 +15,7 @@ module RSpec
       # since it should be able to be used alone
       class BeJsonWithContentMatcher < BeJsonMatcher
         attr_reader(
-          :path,
+          :path
         )
 
         def initialize(expected)
@@ -84,7 +84,7 @@ module RSpec
         private
 
         attr_reader(
-          :expected,
+          :expected
         )
 
         def failure_message_for(should_match)
@@ -116,7 +116,7 @@ module RSpec
             "actual:",
             actual.awesome_inspect(indent: -2),
             "",
-            inspection_message_for_reason,
+            inspection_message_for_reason
           ].join("\n")
         end
 
@@ -144,7 +144,7 @@ module RSpec
         def path_error_message
           [
             %(path "#{path}" does not exists in actual: ),
-            original_actual.awesome_inspect(indent: -2),
+            original_actual.awesome_inspect(indent: -2)
           ].join("\n")
         end
 

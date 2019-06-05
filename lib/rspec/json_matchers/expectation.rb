@@ -92,12 +92,12 @@ module RSpec
         OBJECT_CLASS_TO_EXPECTATION_HASH = {
           Regexp => ->(obj) { Expectations::Private::MatchingRegexp[obj] },
           Range => ->(obj) { Expectations::Private::InRange[obj] },
-          Hash => ->(obj) { Expectations::Mixins::BuiltIn::HashWithContent[obj] },
+          Hash => ->(obj) { Expectations::Mixins::BuiltIn::HashWithContent[obj] }
         }.freeze
         private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
 
         attr_reader(
-          :object,
+          :object
         )
 
         def expectation_by_class

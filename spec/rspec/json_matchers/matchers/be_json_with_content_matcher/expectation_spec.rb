@@ -6,12 +6,12 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
 
     let(:actual) do
       {
-        a: actual_value,
+        a: actual_value
       }
     end
     let(:expected) do
       {
-        a: expected_value,
+        a: expected_value
       }
     end
     let(:actual_value) { fail NotImplementedError }
@@ -228,7 +228,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         context "and it's an instance of a custom class" do
           let(:callable) do
             instance_double("CallableInstance",
-              call: callable_return_value,
+              call: callable_return_value
             )
           end
           let(:callable_return_value) { fail NotImplementedError }
@@ -253,7 +253,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         context "and it's a `Class`" do
           let(:callable_class) do
             class_double("CallableClass",
-              call: callable_return_value,
+              call: callable_return_value
             )
           end
           let(:callable) { callable_class }
@@ -317,36 +317,36 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         [
           {
             type: "String",
-            actual: "ab",
+            actual: "ab"
           },
           {
             type: "Number (Integer)",
-            actual: 1,
+            actual: 1
           },
           {
             type: "Number (Float)",
-            actual: 1.1,
+            actual: 1.1
           },
           {
             type: "Array",
-            actual: [],
+            actual: []
           },
           {
             type: "Object",
-            actual: {},
+            actual: {}
           },
           {
             type: "true",
-            actual: true,
+            actual: true
           },
           {
             type: "false",
-            actual: false,
+            actual: false
           },
           {
             type: "null",
-            actual: nil,
-          },
+            actual: nil
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -367,68 +367,68 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "String",
             actual: "ab",
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "Number (Integer) (Positive)",
             actual: 1,
-            should_match: true,
+            should_match: true
           },
           {
             type: "Number (Integer) (Zero)",
             actual: 0,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Integer) (Negative)",
             actual: -1,
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "Number (Float) (Positive)",
             actual: 1.1,
-            should_match: true,
+            should_match: true
           },
           {
             type: "Number (Float) (Zero)",
             actual: 0.0,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Float) (Negative)",
             actual: -1.1,
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "Array",
             actual: [],
-            should_match: false,
+            should_match: false
           },
           {
             type: "Object",
             actual: {},
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "true",
             actual: true,
-            should_match: false,
+            should_match: false
           },
           {
             type: "false",
             actual: false,
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "null",
             actual: nil,
-            should_match: false,
-          },
+            should_match: false
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -455,68 +455,68 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "String",
             actual: "ab",
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "Number (Integer) (Positive)",
             actual: 1,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Integer) (Zero)",
             actual: 0,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Integer) (Negative)",
             actual: -1,
-            should_match: true,
+            should_match: true
           },
 
           {
             type: "Number (Float) (Positive)",
             actual: 1.1,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Float) (Zero)",
             actual: 0.0,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Float) (Negative)",
             actual: -1.1,
-            should_match: true,
+            should_match: true
           },
 
           {
             type: "Array",
             actual: [],
-            should_match: false,
+            should_match: false
           },
           {
             type: "Object",
             actual: {},
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "true",
             actual: true,
-            should_match: false,
+            should_match: false
           },
           {
             type: "false",
             actual: false,
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "null",
             actual: nil,
-            should_match: false,
-          },
+            should_match: false
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -543,45 +543,45 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "String",
             actual: "ab",
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Integer)",
             actual: 1,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Number (Float)",
             actual: 1.1,
-            should_match: false,
+            should_match: false
           },
           {
             type: "Array",
             actual: [],
-            should_match: false,
+            should_match: false
           },
           {
             type: "Object",
             actual: {},
-            should_match: false,
+            should_match: false
           },
 
           {
             type: "true",
             actual: true,
-            should_match: true,
+            should_match: true
           },
           {
             type: "false",
             actual: false,
-            should_match: true,
+            should_match: true
           },
 
           {
             type: "null",
             actual: nil,
-            should_match: false,
-          },
+            should_match: false
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -687,18 +687,18 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
               {
                 type: "true",
                 actual: [true],
-                should_match: true,
+                should_match: true
               },
               {
                 type: "false",
                 actual: [false],
-                should_match: true,
+                should_match: true
               },
               {
                 type: "null",
                 actual: [nil],
-                should_match: false,
-              },
+                should_match: false
+              }
             ].each do |hash|
               context "and actual is a #{hash.fetch(:type)}" do
                 let(:actual_value) { hash.fetch(:actual) }
@@ -724,13 +724,13 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
               {
                 type: "value matching the expectation",
                 actual: [1],
-                should_match: true,
+                should_match: true
               },
               {
                 type: "value NOT matching the expectation",
                 actual: [2],
-                should_match: false,
-              },
+                should_match: false
+              }
             ].each do |hash|
               context "and actual is a #{hash.fetch(:type)}" do
                 let(:actual_value) { hash.fetch(:actual) }
@@ -857,28 +857,28 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "value matching >= 1 expectations",
             actual: 1,
-            should_match: true,
+            should_match: true
           },
           {
             type: "value matching >= 1 expectations",
             actual: 2,
-            should_match: true,
+            should_match: true
           },
           {
             type: "value matching >= 1 expectations",
             actual: 3,
-            should_match: true,
+            should_match: true
           },
           {
             type: "value matching 0 expectation",
             actual: 4,
-            should_match: false,
+            should_match: false
           },
           {
             type: "value matching 0 expectation and null",
             actual: nil,
-            should_match: false,
-          },
+            should_match: false
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -909,18 +909,18 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "value NOT matching ALL expectations",
             actual: 1,
-            should_match: false,
+            should_match: false
           },
           {
             type: "value NOT matching ALL expectations",
             actual: 2,
-            should_match: false,
+            should_match: false
           },
           {
             type: "value matching ALL expectations",
             actual: 3,
-            should_match: true,
-          },
+            should_match: true
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -951,28 +951,28 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           {
             type: "value matching >= 1 expectations",
             actual: 1,
-            should_match: true,
+            should_match: true
           },
           {
             type: "value matching >= 1 expectations",
             actual: 2,
-            should_match: true,
+            should_match: true
           },
           {
             type: "value matching >= 1 expectations",
             actual: 3,
-            should_match: true,
+            should_match: true
           },
           {
             type: "value matching 0 expectation",
             actual: 4,
-            should_match: false,
+            should_match: false
           },
           {
             type: "value matching 0 expectation and null",
             actual: nil,
-            should_match: true,
-          },
+            should_match: true
+          }
         ].each do |hash|
           context "and actual is a #{hash.fetch(:type)}" do
             let(:actual_value) { hash.fetch(:actual) }
@@ -996,7 +996,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
 
           let(:actual) do
             {
-              a: 1,
+              a: 1
             }
           end
           let!(:expected) do
@@ -1077,7 +1077,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           context "when property is NOT an object" do
             let(:actual) do
               {
-                object: 1,
+                object: 1
               }
             end
 
@@ -1091,8 +1091,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
               {
                 object: {
                   bool:   true,
-                  number: 1,
-                },
+                  number: 1
+                }
               }
             end
 
@@ -1107,8 +1107,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
                 object: {
                   bool:   true,
                   number: 1,
-                  string: "123",
-                },
+                  string: "123"
+                }
               }
             end
 

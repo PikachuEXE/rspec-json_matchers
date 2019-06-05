@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe(*[
   RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher,
-  "#at_path",
+  "#at_path"
 ]) do
   let(:expectations) do
     Module.new do
@@ -16,7 +16,7 @@ RSpec.describe(*[
     expectations.constants.each do |expectation_klass_name|
       stub_const(
         expectation_klass_name.to_s,
-        expectations.const_get(expectation_klass_name),
+        expectations.const_get(expectation_klass_name)
       )
     end
   end
@@ -26,9 +26,9 @@ RSpec.describe(*[
       {
         a: {
           b: {
-            c: 1,
-          },
-        },
+            c: 1
+          }
+        }
       }.to_json
     end
 
@@ -37,23 +37,23 @@ RSpec.describe(*[
         should be_json.with_content(HashWithContent[{
           a: HashWithContent[{
             b: HashWithContent[{
-              c: 1,
-            }],
-          }],
+              c: 1
+            }]
+          }]
         }])
       end
 
       it "matches matcher with path 1 level(s) deep" do
         should be_json.with_content(HashWithContent[{
           b: HashWithContent[{
-            c: 1,
-          }],
+            c: 1
+          }]
         }]).at_path("a")
       end
 
       it "matches matcher with path 2 level(s) deep" do
         should be_json.with_content(HashWithContent[{
-          c: 1,
+          c: 1
         }]).at_path("a.b")
       end
 
@@ -106,22 +106,22 @@ RSpec.describe(*[
       subject do
         {
           "1" => {
-            "2" => 1,
-          },
+            "2" => 1
+          }
         }.to_json
       end
 
       it "matches matcher with no path" do
         should be_json.with_content(HashWithContent[{
           "1" => HashWithContent[{
-            "2" => 1,
-          }],
+            "2" => 1
+          }]
         }])
       end
 
       it "matches matcher with path 1 level(s) deep" do
         should be_json.with_content(HashWithContent[{
-          "2" => 1,
+          "2" => 1
         }]).at_path("1")
       end
 
