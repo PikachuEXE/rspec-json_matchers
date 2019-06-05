@@ -24,4 +24,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial release
 
-[Unreleased]: https://github.com/fnando/i18n-js/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/PikachuEXE/rspec-json_matchers/compare/v0.1.0...HEAD
