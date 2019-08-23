@@ -155,7 +155,7 @@ module RSpec
             EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = begin
               {
                 Range   => ->(v) { Expectations::Private::InRange[v] },
-                Integer => ->(v) { Expectations::Private::Eq[v] },
+                Integer => ->(v) { Expectations::Private::Eq[v] }
               }.tap do |result_hash|
                 # This fix is similar to
                 # https://github.com/rails/rails/pull/26732
@@ -163,7 +163,7 @@ module RSpec
 
                 result_hash.merge!(
                   Fixnum => ->(v) { Expectations::Private::Eq[v] },
-                  Bignum => ->(v) { Expectations::Private::Eq[v] },
+                  Bignum => ->(v) { Expectations::Private::Eq[v] }
                 )
               end
             end.freeze
@@ -224,7 +224,7 @@ module RSpec
             attr_reader :require_exact_key_matches
             alias_method(
               :require_exact_key_matches?,
-              :require_exact_key_matches,
+              :require_exact_key_matches
             )
             attr_reader :expected_value
 

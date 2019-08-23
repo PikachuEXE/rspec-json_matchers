@@ -46,11 +46,11 @@ module RSpec
           private
 
           attr_accessor(
-            :object,
+            :object
           )
           attr_reader(
             :path,
-            :failed,
+            :failed
           )
           alias_method :failed?, :failed
 
@@ -120,10 +120,10 @@ module RSpec
             end
 
             attr_accessor(
-              :object,
+              :object
             )
             attr_reader(
-              :path_part,
+              :path_part
             )
           end
 
