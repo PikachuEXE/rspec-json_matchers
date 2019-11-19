@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'expectations/core'
 require_relative 'expectations/private'
 require_relative 'expectations/mixins/built_in'

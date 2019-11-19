@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RSpec
   # The actual namespace for this gem
   # All other classes/modules are defined within this module
