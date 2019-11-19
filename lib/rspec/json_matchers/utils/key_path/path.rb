@@ -1,4 +1,4 @@
-require_relative "extraction"
+require_relative 'extraction'
 
 module RSpec
   module JsonMatchers
@@ -13,7 +13,7 @@ module RSpec
           # (it can never by used for index anyway)
           # As a side effect this char CANNOT be used,
           # escaping is not planned to be added
-          PATH_PART_SPLITTER = ".".freeze
+          PATH_PART_SPLITTER = '.'.freeze
           # The regular expression for checking "invalid" path
           # The separator should NOT at the start/end of the string,
           # or repeating itself without other chars in between
@@ -21,11 +21,14 @@ module RSpec
           (
           ^#{Regexp.escape(PATH_PART_SPLITTER)}
           |
-          #{Regexp.escape(PATH_PART_SPLITTER)}{2,}
+          #{
+            Regexp.escape(PATH_PART_SPLITTER)
+          }{2,}
           |
           #{Regexp.escape(PATH_PART_SPLITTER)}$
           )
-          /x.freeze
+          /x
+            .freeze
 
           # Creates a {Path}
           # with a {String} (mainly from external)
@@ -49,7 +52,7 @@ module RSpec
             when String
               @string_path = path
             else
-              fail TypeError, "Only String and Path is expected"
+              fail TypeError, 'Only String and Path is expected'
             end
           end
 

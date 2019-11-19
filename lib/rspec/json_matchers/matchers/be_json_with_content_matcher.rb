@@ -1,8 +1,8 @@
-require "json"
-require "awesome_print"
+require 'json'
+require 'awesome_print'
 
-require_relative "be_json_matcher"
-require_relative "../utils"
+require_relative 'be_json_matcher'
+require_relative '../utils'
 
 module RSpec
   module JsonMatchers
@@ -14,13 +14,11 @@ module RSpec
       # This is not merged with {BeJsonMatcher}
       # since it should be able to be used alone
       class BeJsonWithContentMatcher < BeJsonMatcher
-        attr_reader(
-          :path,
-        )
+        attr_reader(:path)
 
         def initialize(expected)
-          @expected     = expected
-          @path         = JsonMatchers::Utils::KeyPath::Path.new("")
+          @expected = expected
+          @path = JsonMatchers::Utils::KeyPath::Path.new('')
         end
 
         def matches?(*_args)
@@ -83,9 +81,7 @@ module RSpec
 
         private
 
-        attr_reader(
-          :expected,
-        )
+        attr_reader(:expected)
 
         def failure_message_for(should_match)
           return invalid_path_message unless has_valid_path?
@@ -109,19 +105,18 @@ module RSpec
 
         def inspection_messages(should_match)
           [
-            ["expected", inspection_messages_prefix(should_match), "to match:"].
-              compact.map(&:strip).join(" "),
+            ['expected', inspection_messages_prefix(should_match), 'to match:'].compact.map(&:strip).join(' '),
             expected.awesome_inspect(indent: -2),
-            "",
-            "actual:",
+            '',
+            'actual:',
             actual.awesome_inspect(indent: -2),
-            "",
+            '',
             inspection_message_for_reason,
           ].join("\n")
         end
 
         def inspection_messages_prefix(should_match)
-          should_match ? nil : "not"
+          should_match ? nil : 'not'
         end
 
         def inspection_message_for_reason
@@ -142,10 +137,7 @@ module RSpec
 
         # For both positive and negative
         def path_error_message
-          [
-            %(path "#{path}" does not exists in actual: ),
-            original_actual.awesome_inspect(indent: -2),
-          ].join("\n")
+          ["path \"#{path}\" does not exists in actual: ", original_actual.awesome_inspect(indent: -2)].join("\n")
         end
 
         def has_valid_path?
@@ -154,7 +146,7 @@ module RSpec
 
         # For both positive and negative
         def invalid_path_message
-          %(path "#{path}" is invalid)
+          "path \"#{path}\" is invalid"
         end
       end
     end

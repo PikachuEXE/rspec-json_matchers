@@ -1,7 +1,7 @@
-require "abstract_class"
+require 'abstract_class'
 
-require_relative "core"
-require_relative "mixins/built_in"
+require_relative 'core'
+require_relative 'mixins/built_in'
 
 module RSpec
   module JsonMatchers
@@ -60,9 +60,7 @@ module RSpec
           attr_reader :expected_class
 
           def initialize(value)
-            unless value.is_a?(EXPECTED_CLASS)
-              fail ArgumentError, "a #{EXPECTED_CLASS} is required"
-            end
+            fail ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
 
             @expected_class = value
           end
@@ -86,9 +84,7 @@ module RSpec
           attr_reader :range
 
           def initialize(value)
-            unless value.is_a?(EXPECTED_CLASS)
-              fail ArgumentError, "a #{EXPECTED_CLASS} is required"
-            end
+            fail ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
 
             @range = value
           end
@@ -114,9 +110,7 @@ module RSpec
           attr_reader :regexp
 
           def initialize(value)
-            unless value.is_a?(EXPECTED_CLASS)
-              fail ArgumentError, "a #{EXPECTED_CLASS} is required"
-            end
+            fail ArgumentError, "a #{EXPECTED_CLASS} is required" unless value.is_a?(EXPECTED_CLASS)
 
             @regexp = value
           end
@@ -137,12 +131,7 @@ module RSpec
           attr_reader :callable
 
           def initialize(value)
-            unless value.respond_to?(:call)
-              fail(
-                ArgumentError,
-                "an object which respond to `:call` is required",
-              )
-            end
+            fail(ArgumentError, 'an object which respond to `:call` is required') unless value.respond_to?(:call)
             @callable = value
           end
         end
@@ -167,8 +156,8 @@ module RSpec
           # `Fixnum` & `Bignum` will be returned instead of `Integer`
           # in `#class` for numbers
           ADDITIONAL_EXPECTATION_CLASS_MAPPINGS = {
-            Array   => ->(_) { Expectations::Private::Nothing::INSTANCE },
-            Hash    => ->(_) { Expectations::Private::Nothing::INSTANCE },
+            Array => ->(_) { Expectations::Private::Nothing::INSTANCE },
+            Hash => ->(_) { Expectations::Private::Nothing::INSTANCE },
           }.freeze
           private_constant :ADDITIONAL_EXPECTATION_CLASS_MAPPINGS
 
@@ -181,9 +170,7 @@ module RSpec
             #
             # @return [Hash]
             def expectation_classes_mappings
-              super.merge(
-                ADDITIONAL_EXPECTATION_CLASS_MAPPINGS,
-              )
+              super.merge(ADDITIONAL_EXPECTATION_CLASS_MAPPINGS)
             end
           end
         end

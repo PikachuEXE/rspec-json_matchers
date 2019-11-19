@@ -14,7 +14,7 @@ module RSpec
 
         COLLECTION_TYPE_TO_VALUE_EXTRACTION_PROC_MAP = {
           Array => ->(collection) { collection.each_index.to_a.to_set },
-          Hash  => ->(collection) { collection.each_key.map(&:to_s).to_set },
+          Hash => ->(collection) { collection.each_key.map(&:to_s).to_set },
         }.freeze
         private_constant :COLLECTION_TYPE_TO_VALUE_EXTRACTION_PROC_MAP
 
@@ -25,10 +25,7 @@ module RSpec
         end
 
         def extract
-          COLLECTION_TYPE_TO_VALUE_EXTRACTION_PROC_MAP.
-            fetch(collection.class) do
-              fail TypeError
-            end.call(collection)
+          COLLECTION_TYPE_TO_VALUE_EXTRACTION_PROC_MAP.fetch(collection.class) { fail TypeError }.call(collection)
         end
       end
     end

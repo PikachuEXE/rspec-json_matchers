@@ -1,6 +1,6 @@
-require "abstract_class"
+require 'abstract_class'
 
-require_relative "../expectation"
+require_relative '../expectation'
 
 module RSpec
   module JsonMatchers
@@ -71,10 +71,7 @@ module RSpec
           # But only 1 argument is accepted
           def self.[](*values)
             unless values.size == EXPECTED_VALUE_SIZE
-              fail(
-                ArgumentError,
-                "Exactly #{EXPECTED_VALUE_SIZE} argument is required",
-              )
+              fail(ArgumentError, "Exactly #{EXPECTED_VALUE_SIZE} argument is required")
             end
             super
           end
