@@ -1,4 +1,4 @@
-require "json"
+require 'json'
 
 module RSpec
   module JsonMatchers
@@ -49,7 +49,7 @@ module RSpec
         #
         # @return [String]
         def description
-          "be a valid JSON string"
+          'be a valid JSON string'
         end
 
         # Failure message displayed when a positive example failed
@@ -57,7 +57,7 @@ module RSpec
         #
         # @return [String]
         def failure_message
-          "expected value to be parsed as JSON, but failed"
+          'expected value to be parsed as JSON, but failed'
         end
 
         # Failure message displayed when a negative example failed
@@ -65,7 +65,7 @@ module RSpec
         #
         # @return [String]
         def failure_message_when_negated
-          "expected value not to be parsed as JSON, but succeeded"
+          'expected value not to be parsed as JSON, but succeeded'
         end
 
         private
@@ -81,4 +81,4 @@ end
 # These files are required here
 # since the classes are only required
 # on runtime but not load time
-require_relative "be_json_with_content_matcher"
+require_relative 'be_json_with_content_matcher'

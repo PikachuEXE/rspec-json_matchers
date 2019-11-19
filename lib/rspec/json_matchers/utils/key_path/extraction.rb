@@ -1,4 +1,4 @@
-require_relative "path"
+require_relative 'path'
 
 module RSpec
   module JsonMatchers
@@ -45,13 +45,8 @@ module RSpec
 
           private
 
-          attr_accessor(
-            :object,
-          )
-          attr_reader(
-            :path,
-            :failed,
-          )
+          attr_accessor(:object)
+          attr_reader(:path, :failed)
           alias_method :failed?, :failed
 
           # @param path_part [String]
@@ -112,19 +107,13 @@ module RSpec
               index = path_part.to_i
               # Disallow index to be out of range
               # Disallow negative number as index
-              unless (path_part =~ /\A\d+\z/) && index < object.size
-                return Result.new(object, false)
-              end
+              return Result.new(object, false) unless (path_part =~ /\A\d+\z/) && index < object.size
 
               Result.new(object.slice(index), true)
             end
 
-            attr_accessor(
-              :object,
-            )
-            attr_reader(
-              :path_part,
-            )
+            attr_accessor(:object)
+            attr_reader(:path_part)
           end
 
           # @api private

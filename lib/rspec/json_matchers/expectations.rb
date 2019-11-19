@@ -1,6 +1,6 @@
-require_relative "expectations/core"
-require_relative "expectations/private"
-require_relative "expectations/mixins/built_in"
+require_relative 'expectations/core'
+require_relative 'expectations/private'
+require_relative 'expectations/mixins/built_in'
 
 module RSpec
   module JsonMatchers
@@ -8,7 +8,6 @@ module RSpec
     # Use the structure like {Expectations::BuiltIn}
     #
     # @api private
-    module Expectations
-    end
+    module Expectations; end
   end
 end

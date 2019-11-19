@@ -1,4 +1,4 @@
-require "abstract_class"
+require 'abstract_class'
 
 module RSpec
   module JsonMatchers
@@ -96,14 +96,10 @@ module RSpec
         }.freeze
         private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
 
-        attr_reader(
-          :object,
-        )
+        attr_reader(:object)
 
         def expectation_by_class
-          if instance_variable_defined?(:@expectation_by_object_class)
-            return @expectation_by_object_class
-          end
+          return @expectation_by_object_class if instance_variable_defined?(:@expectation_by_object_class)
 
           proc = OBJECT_CLASS_TO_EXPECTATION_HASH[object.class]
           return nil if proc.nil?
@@ -115,9 +111,7 @@ module RSpec
         def expectation_by_ancestors
           # Subclass
           # See http://ruby-doc.org/core-2.2.2/Module.html#method-i-3C
-          if object < Expectations::Core::SingletonExpectation
-            return object::INSTANCE
-          end
+          return object::INSTANCE if object < Expectations::Core::SingletonExpectation
 
           Expectations::Private::KindOf[object]
         end
@@ -131,4 +125,4 @@ module RSpec
 end
 
 # Classes in the following file(s) are required at runtime not parse time
-require_relative "expectations"
+require_relative 'expectations'

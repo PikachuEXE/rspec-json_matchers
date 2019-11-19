@@ -1,6 +1,6 @@
-require "abstract_class"
+require 'abstract_class'
 
-require_relative "core"
+require_relative 'core'
 
 module RSpec
   module JsonMatchers
