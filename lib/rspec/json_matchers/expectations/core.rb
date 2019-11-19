@@ -73,6 +73,7 @@ module RSpec
             unless values.size == EXPECTED_VALUE_SIZE
               fail(ArgumentError, "Exactly #{EXPECTED_VALUE_SIZE} argument is required")
             end
+
             super
           end
         end

@@ -132,6 +132,7 @@ module RSpec
 
           def initialize(value)
             fail(ArgumentError, 'an object which respond to `:call` is required') unless value.respond_to?(:call)
+
             @callable = value
           end
         end
