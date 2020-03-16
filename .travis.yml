@@ -14,10 +14,10 @@ before_install:
 cache:
   - bundler
 rvm:
-  - 2.3
   - 2.4
   - 2.5
   - 2.6
+  - 2.7
   - ruby-head
 gemfile:
   - gemfiles/rspec_3_0.gemfile
