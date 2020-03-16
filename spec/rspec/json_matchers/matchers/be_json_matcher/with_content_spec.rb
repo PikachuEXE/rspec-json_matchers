@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
