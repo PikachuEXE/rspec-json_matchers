@@ -42,3 +42,7 @@ end
 appraise "rspec_3_8" do
   gem "rspec", "~> 3.8.0"
 end
+
+appraise "rspec_3_9" do
+  gem "rspec", "~> 3.9.0"
+end
