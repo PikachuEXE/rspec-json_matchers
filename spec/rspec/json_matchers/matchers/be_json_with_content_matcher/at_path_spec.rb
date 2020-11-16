@@ -2,10 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe(*[
-  RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher,
-  "#at_path",
-]) do
+RSpec.describe(RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher, "#at_path") do
   let(:expectations) do
     Module.new do
       include RSpec::JsonMatchers::Expectations::Mixins::BuiltIn
