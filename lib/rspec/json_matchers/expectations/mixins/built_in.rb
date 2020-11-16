@@ -164,8 +164,8 @@ module RSpec
                 next if 1.class == Integer
 
                 result_hash.merge!(
-                  Fixnum => ->(v) { Expectations::Private::Eq[v] },
-                  Bignum => ->(v) { Expectations::Private::Eq[v] },
+                  Integer => ->(v) { Expectations::Private::Eq[v] },
+                  Integer => ->(v) { Expectations::Private::Eq[v] },
                 )
               end
             end.freeze
