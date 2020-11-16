@@ -15,7 +15,7 @@ module RSpec
           # (it can never by used for index anyway)
           # As a side effect this char CANNOT be used,
           # escaping is not planned to be added
-          PATH_PART_SPLITTER = ".".freeze
+          PATH_PART_SPLITTER = "."
           # The regular expression for checking "invalid" path
           # The separator should NOT at the start/end of the string,
           # or repeating itself without other chars in between
