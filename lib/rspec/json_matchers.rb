@@ -12,6 +12,5 @@ require_relative "json_matchers/expectations"
 module RSpec
   # The actual namespace for this gem
   # All other classes/modules are defined within this module
-  module JsonMatchers
-  end
+  module JsonMatchers; end
 end

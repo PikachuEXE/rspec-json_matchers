@@ -72,8 +72,7 @@ module RSpec
           # And uses stored expectation for checking all elements of `value`
           class ArrayOf < Expectations::Core::SingleValueCallableExpectation
             def expect?(value)
-              value.is_a?(Array) &&
-                (empty_allowed? || !value.empty?) &&
+              value.is_a?(Array) && (empty_allowed? || !value.empty?) &&
                 value.all? { |v| children_elements_expectation.expect?(v) }
             end
 
@@ -154,32 +153,32 @@ module RSpec
             # `Fixnum` & `Bignum` will be returned instead of `Integer`
             # in `#class` for numbers
             # But since 2.4.x it will be `Integer`
-            EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING = begin
-              {
-                Range   => ->(v) { Expectations::Private::InRange[v] },
-                Integer => ->(v) { Expectations::Private::Eq[v] },
-              }.tap do |result_hash|
-                # This fix is similar to
-                # https://github.com/rails/rails/pull/26732
-                next if 1.class == Integer
+            EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING =
+              begin
+                {
+                  Range => ->(v) { Expectations::Private::InRange[v] },
+                  Integer => ->(v) { Expectations::Private::Eq[v] },
+                }.tap do |result_hash|
+                  next if 1.class == Integer
 
-                result_hash.merge!(
-                  Fixnum => ->(v) { Expectations::Private::Eq[v] },
-                  Bignum => ->(v) { Expectations::Private::Eq[v] },
-                )
-              end
-            end.freeze
+                  result_hash.merge!(
+                    Fixnum => ->(v) { Expectations::Private::Eq[v] }, Bignum => ->(v) { Expectations::Private::Eq[v] },
+                  )
+                end
+              end.freeze
             private_constant :EXPECTED_VALUE_CLASS_TO_EXPECTATION_CLASS_MAPPING
 
             class << self
               # Overrides {Expectation.build}
               def build(value)
                 expectation_classes_mappings.fetch(value.class) do
-                  ->(_) { fail ArgumentError, <<-ERR }
+                  lambda do |_|
+                    fail ArgumentError, <<-ERR
                     Expected expection(s) to be kind of
                     #{expectation_classes_mappings.keys.inspect}
                     but found #{value.inspect}
                   ERR
+                  end
                 end.call(value)
               end
 
@@ -192,8 +191,7 @@ module RSpec
             end
 
             def expect?(value)
-              value.is_a?(Array) &&
-                super(value.size)
+              value.is_a?(Array) && super(value.size)
             end
           end
 
@@ -207,9 +205,7 @@ module RSpec
             private_constant :EXPECTED_CLASS
 
             def expect?(value)
-              matches_expected_class?(value) &&
-                matches_content_expectations?(value) &&
-                matches_keys_exactly?(value)
+              matches_expected_class?(value) && matches_content_expectations?(value) && matches_keys_exactly?(value)
             end
 
             # After calling this method
@@ -224,10 +220,7 @@ module RSpec
             private
 
             attr_reader :require_exact_key_matches
-            alias_method(
-              :require_exact_key_matches?,
-              :require_exact_key_matches,
-            )
+            alias_method(:require_exact_key_matches?, :require_exact_key_matches)
             attr_reader :expected_value
 
             def matches_expected_class?(value)
@@ -237,20 +230,19 @@ module RSpec
             def matches_keys_exactly?(actual_value)
               return true unless require_exact_key_matches?
 
-              ::Set.new(expected_value.keys.map(&:to_s)) ==
-                ::Set.new(actual_value.keys.map(&:to_s))
+              ::Set.new(expected_value.keys.map(&:to_s)) == ::Set.new(actual_value.keys.map(&:to_s))
             end
 
             def matches_content_expectations?(actual_value)
               expected_value.each_pair.all? do |exp_key, exp_value|
-                unless actual_value.key?(exp_key) ||
-                    actual_value.key?(exp_key.to_s)
+                unless actual_value.key?(exp_key) || actual_value.key?(exp_key.to_s)
                   return false
                 end
 
-                value_from_actual = actual_value.fetch(exp_key) do
-                  actual_value.fetch(exp_key.to_s)
-                end
+                value_from_actual =
+                  actual_value.fetch(exp_key) do
+                    actual_value.fetch(exp_key.to_s)
+                  end
                 Expectation.build(exp_value).expect?(value_from_actual)
               end
             end

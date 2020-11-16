@@ -47,13 +47,8 @@ module RSpec
 
           private
 
-          attr_accessor(
-            :object,
-          )
-          attr_reader(
-            :path,
-            :failed,
-          )
+          attr_accessor(:object)
+          attr_reader(:path, :failed)
           alias_method :failed?, :failed
 
           # @param path_part [String]
@@ -121,12 +116,8 @@ module RSpec
               Result.new(object.slice(index), true)
             end
 
-            attr_accessor(
-              :object,
-            )
-            attr_reader(
-              :path_part,
-            )
+            attr_accessor(:object)
+            attr_reader(:path_part)
           end
 
           # @api private

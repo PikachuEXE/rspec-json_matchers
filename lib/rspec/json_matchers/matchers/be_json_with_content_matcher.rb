@@ -16,13 +16,11 @@ module RSpec
       # This is not merged with {BeJsonMatcher}
       # since it should be able to be used alone
       class BeJsonWithContentMatcher < BeJsonMatcher
-        attr_reader(
-          :path,
-        )
+        attr_reader(:path)
 
         def initialize(expected)
-          @expected     = expected
-          @path         = JsonMatchers::Utils::KeyPath::Path.new("")
+          @expected = expected
+          @path = JsonMatchers::Utils::KeyPath::Path.new("")
         end
 
         def matches?(*_args)
@@ -85,9 +83,7 @@ module RSpec
 
         private
 
-        attr_reader(
-          :expected,
-        )
+        attr_reader(:expected)
 
         def failure_message_for(should_match)
           return invalid_path_message unless has_valid_path?
@@ -111,8 +107,7 @@ module RSpec
 
         def inspection_messages(should_match)
           [
-            ["expected", inspection_messages_prefix(should_match), "to match:"].
-              compact.map(&:strip).join(" "),
+            ["expected", inspection_messages_prefix(should_match), "to match:"].compact.map(&:strip).join(" "),
             expected.awesome_inspect(indent: -2),
             "",
             "actual:",
@@ -127,7 +122,7 @@ module RSpec
         end
 
         def inspection_message_for_reason
-          reasons.any? ? "reason/path: #{reasons.reverse.join('.')}" : nil
+          reasons.any? ? "reason/path: #{reasons.reverse.join(".")}" : nil
         end
 
         def original_actual
@@ -144,10 +139,7 @@ module RSpec
 
         # For both positive and negative
         def path_error_message
-          [
-            %(path "#{path}" does not exists in actual: ),
-            original_actual.awesome_inspect(indent: -2),
-          ].join("\n")
+          ["path \"#{path}\" does not exists in actual: ", original_actual.awesome_inspect(indent: -2)].join("\n")
         end
 
         def has_valid_path?
@@ -156,7 +148,7 @@ module RSpec
 
         # For both positive and negative
         def invalid_path_message
-          %(path "#{path}" is invalid)
+          "path \"#{path}\" is invalid"
         end
       end
     end

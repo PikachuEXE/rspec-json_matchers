@@ -10,7 +10,6 @@ module RSpec
     # Use the structure like {Expectations::BuiltIn}
     #
     # @api private
-    module Expectations
-    end
+    module Expectations; end
   end
 end

@@ -140,10 +140,7 @@ module RSpec
 
           def initialize(value)
             unless value.respond_to?(:call)
-              fail(
-                ArgumentError,
-                "an object which respond to `:call` is required",
-              )
+              fail(ArgumentError, "an object which respond to `:call` is required")
             end
             @callable = value
           end
@@ -169,8 +166,8 @@ module RSpec
           # `Fixnum` & `Bignum` will be returned instead of `Integer`
           # in `#class` for numbers
           ADDITIONAL_EXPECTATION_CLASS_MAPPINGS = {
-            Array   => ->(_) { Expectations::Private::Nothing::INSTANCE },
-            Hash    => ->(_) { Expectations::Private::Nothing::INSTANCE },
+            Array => ->(_) { Expectations::Private::Nothing::INSTANCE },
+            Hash => ->(_) { Expectations::Private::Nothing::INSTANCE },
           }.freeze
           private_constant :ADDITIONAL_EXPECTATION_CLASS_MAPPINGS
 
@@ -183,9 +180,7 @@ module RSpec
             #
             # @return [Hash]
             def expectation_classes_mappings
-              super.merge(
-                ADDITIONAL_EXPECTATION_CLASS_MAPPINGS,
-              )
+              super.merge(ADDITIONAL_EXPECTATION_CLASS_MAPPINGS)
             end
           end
         end

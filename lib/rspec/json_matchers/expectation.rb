@@ -98,9 +98,7 @@ module RSpec
         }.freeze
         private_constant :OBJECT_CLASS_TO_EXPECTATION_HASH
 
-        attr_reader(
-          :object,
-        )
+        attr_reader(:object)
 
         def expectation_by_class
           if instance_variable_defined?(:@expectation_by_object_class)

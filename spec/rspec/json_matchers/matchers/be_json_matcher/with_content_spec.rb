@@ -11,10 +11,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
   before(:each) do
     expectations.constants.each do |expectation_klass_name|
-      stub_const(
-        expectation_klass_name.to_s,
-        expectations.const_get(expectation_klass_name),
-      )
+      stub_const(expectation_klass_name.to_s, expectations.const_get(expectation_klass_name))
     end
   end
 
@@ -60,14 +57,10 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       subject { actual.to_json }
 
       let(:actual) do
-        {
-          a: 1,
-        }
+        { a: 1 }
       end
       let!(:expected) do
-        HashWithContent[{
-          a: 1,
-        }]
+        HashWithContent[{ a: 1 }]
       end
 
       context "and subject is exactly matched with expected" do
@@ -78,9 +71,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
       context "and subject is exactly matched with expected with string keys" do
         let!(:expected) do
-          HashWithContent[{
-            "a" => 1,
-          }]
+          HashWithContent[{ "a" => 1 }]
         end
 
         it "DOES match" do
@@ -90,9 +81,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
       context "and subject has different content then expected" do
         let!(:expected) do
-          HashWithContent[{
-            a: 2,
-          }]
+          HashWithContent[{ a: 2 }]
         end
 
         it "does NOT match" do
@@ -102,8 +91,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
 
       context "and expected has less keys than actual" do
         let!(:expected) do
-          HashWithContent[{
-          }]
+          HashWithContent[{}]
         end
 
         it "DOES match" do
@@ -123,10 +111,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
         context "and expected has more properties" do
           context "and subject has more properties" do
             let!(:expected) do
-              HashWithContent[{
-                a: 1,
-                b: 1,
-              }]
+              HashWithContent[{ a: 1, b: 1 }]
             end
 
             it "does NOT match" do
@@ -141,18 +126,10 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       subject { actual.to_json }
 
       let(:actual) do
-        {
-          a: {
-            b: 1,
-          },
-        }
+        { a: { b: 1 } }
       end
       let!(:expected) do
-        HashWithContent[{
-          a: HashWithContent[{
-            b: 1,
-          }],
-        }]
+        HashWithContent[{ a: HashWithContent[{ b: 1 }] }]
       end
 
       context "and subject is exactly matched with expected" do
@@ -164,11 +141,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       context "and subject has different content then expected" do
         context "the only difference is the content of the deepest key" do
           let!(:expected) do
-            HashWithContent[{
-              a: HashWithContent[{
-                b: 2,
-              }],
-            }]
+            HashWithContent[{ a: HashWithContent[{ b: 2 }] }]
           end
 
           it "does NOT match" do
@@ -177,9 +150,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
         end
         context "the only difference is the nesting" do
           let!(:expected) do
-            HashWithContent[{
-              a: 1,
-            }]
+            HashWithContent[{ a: 1 }]
           end
 
           it "does NOT match" do
@@ -193,22 +164,10 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       subject { actual.to_json }
 
       let(:actual) do
-        {
-          a: {
-            b: {
-              c: 1,
-            },
-          },
-        }
+        { a: { b: { c: 1 } } }
       end
       let!(:expected) do
-        HashWithContent[{
-          a: HashWithContent[{
-            b: HashWithContent[{
-              c: 1,
-            }],
-          }],
-        }]
+        HashWithContent[{ a: HashWithContent[{ b: HashWithContent[{ c: 1 }] }] }]
       end
 
       context "and subject is exactly matched with expected" do
@@ -220,13 +179,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
       context "and subject has different content then expected" do
         context "the only difference is the content of the deepest key" do
           let!(:expected) do
-            HashWithContent[{
-              a: HashWithContent[{
-                b: HashWithContent[{
-                  c: 2,
-                }],
-              }],
-            }]
+            HashWithContent[{ a: HashWithContent[{ b: HashWithContent[{ c: 2 }] }] }]
           end
 
           it "does NOT match" do
@@ -235,11 +188,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonMatcher, "#with_content" do
         end
         context "the only difference is the nesting" do
           let!(:expected) do
-            HashWithContent[{
-              a: HashWithContent[{
-                b: 2,
-              }],
-            }]
+            HashWithContent[{ a: HashWithContent[{ b: 2 }] }]
           end
 
           it "does NOT match" do
