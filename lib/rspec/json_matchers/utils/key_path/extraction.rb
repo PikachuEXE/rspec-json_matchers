@@ -54,7 +54,7 @@ module RSpec
             :path,
             :failed,
           )
-          alias_method :failed?, :failed
+          alias failed? failed
 
           # @param path_part [String]
           #   One part of {#path}

@@ -224,10 +224,7 @@ module RSpec
             private
 
             attr_reader :require_exact_key_matches
-            alias_method(
-              :require_exact_key_matches?,
-              :require_exact_key_matches,
-            )
+            alias require_exact_key_matches? require_exact_key_matches
             attr_reader :expected_value
 
             def matches_expected_class?(value)
