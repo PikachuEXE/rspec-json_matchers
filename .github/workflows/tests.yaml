@@ -1,0 +1,73 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  unit_tests:
+    name: Unit Tests
+    if: "contains(github.event.commits[0].message, '[ci skip]') == false"
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu
+        ruby:
+          - 2.4
+          - 2.5
+          - 2.6
+          - 2.7
+        gemfile:
+          - gemfiles/rspec_3_0.gemfile
+          - gemfiles/rspec_3_1.gemfile
+          - gemfiles/rspec_3_2.gemfile
+          - gemfiles/rspec_3_3.gemfile
+          - gemfiles/rspec_3_4.gemfile
+          - gemfiles/rspec_3_5.gemfile
+          - gemfiles/rspec_3_6.gemfile
+          - gemfiles/rspec_3_7.gemfile
+          - gemfiles/rspec_3_8.gemfile
+          - gemfiles/rspec_3_9.gemfile
+          - gemfiles/rspec_3_10.gemfile
+        allow_failures:
+          - false
+        include:
+          - os: ubuntu
+            ruby: ruby-head
+            gemfile: gemfiles/rspec_3_10.gemfile
+            allow_failures: true
+    env:
+      BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
+      BUNDLE_PATH:    "./vendor/bundle"
+      ALLOW_FAILURES: "${{ matrix.allow_failures }}"
+    runs-on: ${{ matrix.os }}-latest
+    continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - uses: actions/cache@v2
+        with:
+          path: gemfiles/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-gems--${{ matrix.ruby }}-${{ matrix.gemfile }}-${{ github.ref }}-
+            ${{ runner.os }}-gems--${{ matrix.ruby }}-${{ matrix.gemfile }}-
+            ${{ runner.os }}-gems--${{ matrix.ruby }}-
+      - name: Bundle Install
+        run: |
+          bundle install --jobs 4 --retry 3
+      - name: Test
+        run: bundle exec rake spec || $ALLOW_FAILURES
