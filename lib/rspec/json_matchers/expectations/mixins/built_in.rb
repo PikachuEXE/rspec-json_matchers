@@ -175,7 +175,7 @@ module RSpec
               # Overrides {Expectation.build}
               def build(value)
                 expectation_classes_mappings.fetch(value.class) do
-                  ->(_) { fail ArgumentError, <<-ERR }
+                  ->(_) { raise ArgumentError, <<-ERR }
                     Expected expection(s) to be kind of
                     #{expectation_classes_mappings.keys.inspect}
                     but found #{value.inspect}
@@ -257,7 +257,7 @@ module RSpec
 
             def initialize(value)
               unless value.is_a?(::Hash)
-                fail ArgumentError, "a #{EXPECTED_CLASS} is required"
+                raise ArgumentError, "a #{EXPECTED_CLASS} is required"
               end
 
               @expected_value = value

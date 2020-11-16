@@ -29,7 +29,7 @@ module RSpec
         def extract
           COLLECTION_TYPE_TO_VALUE_EXTRACTION_PROC_MAP.
             fetch(collection.class) do
-              fail TypeError
+              raise TypeError
             end.call(collection)
         end
       end

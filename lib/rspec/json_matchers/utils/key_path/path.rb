@@ -51,7 +51,7 @@ module RSpec
             when String
               @string_path = path
             else
-              fail TypeError, "Only String and Path is expected"
+              raise TypeError, "Only String and Path is expected"
             end
           end
 
