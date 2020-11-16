@@ -223,12 +223,12 @@ module RSpec
 
             private
 
-            attr_reader :require_exact_key_matches
+            attr_reader :require_exact_key_matches, :expected_value
             alias_method(
               :require_exact_key_matches?,
               :require_exact_key_matches,
             )
-            attr_reader :expected_value
+            
 
             def matches_expected_class?(value)
               value.is_a?(::Hash)
