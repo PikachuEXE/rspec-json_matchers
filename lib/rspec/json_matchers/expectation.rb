@@ -31,7 +31,7 @@ module RSpec
       #
       # @return [Bool] Whether the `value` is expected
       def expect?(_value)
-        fail NotImplementedError
+        raise NotImplementedError
       end
 
       class << self

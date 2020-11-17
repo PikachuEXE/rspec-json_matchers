@@ -73,7 +73,7 @@ module RSpec
           # But only 1 argument is accepted
           def self.[](*values)
             unless values.size == EXPECTED_VALUE_SIZE
-              fail(
+              raise(
                 ArgumentError,
                 "Exactly #{EXPECTED_VALUE_SIZE} argument is required",
               )

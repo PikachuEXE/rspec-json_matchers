@@ -63,7 +63,7 @@ module RSpec
 
           def initialize(value)
             unless value.is_a?(EXPECTED_CLASS)
-              fail ArgumentError, "a #{EXPECTED_CLASS} is required"
+              raise ArgumentError, "a #{EXPECTED_CLASS} is required"
             end
 
             @expected_class = value
@@ -89,7 +89,7 @@ module RSpec
 
           def initialize(value)
             unless value.is_a?(EXPECTED_CLASS)
-              fail ArgumentError, "a #{EXPECTED_CLASS} is required"
+              raise ArgumentError, "a #{EXPECTED_CLASS} is required"
             end
 
             @range = value
@@ -117,7 +117,7 @@ module RSpec
 
           def initialize(value)
             unless value.is_a?(EXPECTED_CLASS)
-              fail ArgumentError, "a #{EXPECTED_CLASS} is required"
+              raise ArgumentError, "a #{EXPECTED_CLASS} is required"
             end
 
             @regexp = value
@@ -140,7 +140,7 @@ module RSpec
 
           def initialize(value)
             unless value.respond_to?(:call)
-              fail(
+              raise(
                 ArgumentError,
                 "an object which respond to `:call` is required",
               )

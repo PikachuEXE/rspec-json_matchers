@@ -16,8 +16,8 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
         a: expected_value,
       }
     end
-    let(:actual_value) { fail NotImplementedError }
-    let(:expected_value) { fail NotImplementedError }
+    let(:actual_value) { raise NotImplementedError }
+    let(:expected_value) { raise NotImplementedError }
 
     context "when expected value represents a valid JSON data type" do
       context "like `String`" do
@@ -203,11 +203,11 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
     describe "when expected value is callable" do
       let(:expected_value) { callable }
       let(:actual_value) { "whatever" }
-      let(:callable) { fail NotImplementedError }
+      let(:callable) { raise NotImplementedError }
 
       context "when expected is a `Proc`" do
         let(:callable) { ->(_) { callable_return_value } }
-        let(:callable_return_value) { fail NotImplementedError }
+        let(:callable_return_value) { raise NotImplementedError }
 
         context "when expected returned false" do
           let(:callable_return_value) { false }
@@ -233,7 +233,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
               call: callable_return_value,
             )
           end
-          let(:callable_return_value) { fail NotImplementedError }
+          let(:callable_return_value) { raise NotImplementedError }
 
           context "when expected returned false" do
             let(:callable_return_value) { false }
@@ -259,7 +259,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
             )
           end
           let(:callable) { callable_class }
-          let(:callable_return_value) { fail NotImplementedError }
+          let(:callable_return_value) { raise NotImplementedError }
 
           context "when expected returned false" do
             let(:callable_return_value) { false }
@@ -284,7 +284,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
       context "and the class is NOT a subclass of `SingletonExpectation`" do
         let(:expected_value) { klass }
         let(:actual_value) { 1 }
-        let(:klass) { fail NotImplementedError }
+        let(:klass) { raise NotImplementedError }
 
         context "when class does NOT match the data type" do
           let(:klass) { String }
@@ -759,7 +759,7 @@ RSpec.describe RSpec::JsonMatchers::Matchers::BeJsonWithContentMatcher do
           RSpec::JsonMatchers::Expectations::
             Mixins::BuiltIn::ArrayWithSize[*expected_sizes]
         end
-        let(:expected_sizes) { fail NotImplementedError }
+        let(:expected_sizes) { raise NotImplementedError }
 
         context "when actual is NOT an Array" do
           let(:expected_sizes) { [1] }
