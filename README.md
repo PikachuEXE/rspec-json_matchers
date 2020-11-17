@@ -11,10 +11,10 @@ You can read [the story of this project](https://github.com/PikachuEXE/rspec-jso
 
 ## Status
 
+[![GitHub Build Status](https://img.shields.io/github/workflow/status/PikachuEXE/rspec-json_matchers/Tests?style=flat-square)](https://github.com/PikachuEXE/rspec-json_matchers/actions?query=workflow%3ATests)
+
 [![Gem Version](http://img.shields.io/gem/v/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
 [![License](https://img.shields.io/github/license/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
-
-[![Build Status](http://img.shields.io/travis/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://travis-ci.org/PikachuEXE/rspec-json_matchers)
 
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codeclimate.com/github/PikachuEXE/rspec-json_matchers)
 [![Coverage Status](https://img.shields.io/codecov/c/github/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](https://codecov.io/gh/PikachuEXE/rspec-json_matchers)
