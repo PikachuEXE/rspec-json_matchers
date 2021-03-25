@@ -1,0 +1,65 @@
+name: Coverage
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  coverage:
+    name: Coverage
+    # Homemade support for [ci skip] no longer needed
+    # https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/
+    # if: "contains(github.event.commits[0].message, '[ci skip]') == false"
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu
+        ruby:
+          - 2.7
+        gemfile:
+          - gemfiles/rails_5_2.gemfile
+          - gemfiles/rails_6_0.gemfile
+          - gemfiles/rails_6_1.gemfile
+    env:
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+      COVERALLS: true
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Collect coverage info
+        run: bundle exec rake spec
+
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@master
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ matrix.ruby }}-${{ matrix.gemfile }}
+          parallel: true
+
+  finish:
+    needs: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
