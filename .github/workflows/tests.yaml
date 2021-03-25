@@ -15,14 +15,15 @@ on:
 jobs:
   unit_tests:
     name: Unit Tests
-    if: "contains(github.event.commits[0].message, '[ci skip]') == false"
+    # Homemade support for [ci skip] no longer needed
+    # https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/
+    # if: "contains(github.event.commits[0].message, '[ci skip]') == false"
     strategy:
       fail-fast: false
       matrix:
         os:
           - ubuntu
         ruby:
-          - 2.4
           - 2.5
           - 2.6
           - 2.7
