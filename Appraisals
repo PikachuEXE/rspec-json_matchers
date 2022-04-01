@@ -50,3 +50,7 @@ end
 appraise "rspec_3_10" do
   gem "rspec", "~> 3.10.0"
 end
+
+appraise "rspec_3_11" do
+  gem "rspec", "~> 3.10.0"
+end

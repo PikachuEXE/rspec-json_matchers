@@ -24,9 +24,8 @@ jobs:
         os:
           - ubuntu
         ruby:
-          - 2.5
-          - 2.6
           - 2.7
+          - 3.0
         gemfile:
           - gemfiles/rspec_3_0.gemfile
           - gemfiles/rspec_3_1.gemfile
@@ -39,12 +38,17 @@ jobs:
           - gemfiles/rspec_3_8.gemfile
           - gemfiles/rspec_3_9.gemfile
           - gemfiles/rspec_3_10.gemfile
+          - gemfiles/rspec_3_11.gemfile
         allow_failures:
           - false
         include:
           - os: ubuntu
+            ruby: 3.1
+            gemfile: gemfiles/rspec_3_11.gemfile
+            allow_failures: true
+          - os: ubuntu
             ruby: ruby-head
-            gemfile: gemfiles/rspec_3_10.gemfile
+            gemfile: gemfiles/rspec_3_11.gemfile
             allow_failures: true
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
