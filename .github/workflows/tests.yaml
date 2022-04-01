@@ -24,8 +24,9 @@ jobs:
         os:
           - ubuntu
         ruby:
-          - 2.7
-          - 3.0
+          - "2.7"
+          - "3.0"
+          - "3.1"
         gemfile:
           - gemfiles/rspec_3_0.gemfile
           - gemfiles/rspec_3_1.gemfile
@@ -42,10 +43,6 @@ jobs:
         allow_failures:
           - false
         include:
-          - os: ubuntu
-            ruby: 3.1
-            gemfile: gemfiles/rspec_3_11.gemfile
-            allow_failures: true
           - os: ubuntu
             ruby: ruby-head
             gemfile: gemfiles/rspec_3_11.gemfile
