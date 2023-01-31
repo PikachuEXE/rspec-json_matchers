@@ -11,7 +11,7 @@ You can read [the story of this project](https://github.com/PikachuEXE/rspec-jso
 
 ## Status
 
-[![GitHub Build Status](https://img.shields.io/github/workflow/status/PikachuEXE/rspec-json_matchers/Tests?style=flat-square)](https://github.com/PikachuEXE/rspec-json_matchers/actions?query=workflow%3ATests)
+[![GitHub Build Status](https://img.shields.io/github/actions/workflow/status/PikachuEXE/rspec-json_matchers/tests.yaml?branch=master&style=flat-square)](https://github.com/PikachuEXE/rspec-json_matchers/actions/workflows/tests.yaml)
 
 [![Gem Version](http://img.shields.io/gem/v/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
 [![License](https://img.shields.io/github/license/PikachuEXE/rspec-json_matchers.svg?style=flat-square)](http://badge.fury.io/rb/rspec-json_matchers)
