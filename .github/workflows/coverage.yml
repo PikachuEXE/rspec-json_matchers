@@ -24,9 +24,9 @@ jobs:
         os:
           - ubuntu
         ruby:
-          - 2.7
+          - "3.2"
         gemfile:
-          - gemfiles/rspec_3_11.gemfile
+          - gemfiles/rspec_3_12.gemfile
     env:
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
       COVERALLS: true
