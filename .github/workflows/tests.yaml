@@ -21,8 +21,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu
         ruby:
           - "3.0"
           - "3.1"
@@ -42,14 +40,13 @@ jobs:
         allow_failures:
           - false
         include:
-          - os: ubuntu
-            ruby: ruby-head
+          - ruby: ruby-head
             gemfile: gemfiles/rspec_3_13.gemfile
             allow_failures: true
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
       ALLOW_FAILURES: "${{ matrix.allow_failures }}"
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ubuntu-latest
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
       - name: Checkout
