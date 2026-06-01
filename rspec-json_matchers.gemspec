@@ -40,5 +40,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.3.0"
 
-  spec.required_rubygems_version = ">= 1.4.0"
+  # requiring all owners to enable MFA on their account
+  # https://guides.rubygems.org/mfa-requirement-opt-in/
+  spec.metadata["rubygems_mfa_required"] = "true"
 end
